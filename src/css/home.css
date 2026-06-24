@@ -1,0 +1,68 @@
+body {
+  background: var(--bg);
+}
+
+#hero-section {
+  min-height: 60vh;
+  background: linear-gradient(
+    to bottom,
+    var(--azzurro) 0%,
+    var(--bg) 100%
+  );
+}
+
+#hero-section > .container {
+  min-height: 60vh;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(18rem, 0.9fr);
+  align-items: start;
+  gap: clamp(2rem, 7vw, 8rem);
+  padding-top: 5rem;
+  padding-bottom: 8rem;
+}
+
+#hero-section h1 {
+  max-width: 1000px;
+  margin: 0;
+  color: #ffffff;
+  font-size: clamp(4.2rem, 8vw, 8.5rem);
+  font-weight: 500;
+  line-height: 0.98;
+  letter-spacing: -0.055em;
+}
+
+#hero-section h2 {
+  max-width: 22ch;
+  margin: 2rem 0 0;
+  color: var(--prugna);
+  font-size: clamp(1.45rem, 2.6vw, 2.6rem);
+  font-weight: 400;
+  line-height: 1.12;
+  letter-spacing: -0.025em;
+}
+
+@media (max-width: 767.98px) {
+  #hero-section,
+  #hero-section > .container {
+    min-height: 68vh;
+  }
+
+  #hero-section > .container {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding-top: 4.5rem;
+    padding-bottom: 5rem;
+  }
+
+  #hero-section h1 {
+    font-size: clamp(3.2rem, 15vw, 5.2rem);
+    line-height: 0.92;
+  }
+
+  #hero-section h2 {
+    max-width: 20ch;
+    margin: 0;
+    font-size: clamp(1.25rem, 5.5vw, 1.7rem);
+    line-height: 1.12;
+  }
+}
