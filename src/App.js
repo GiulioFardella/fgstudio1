@@ -1,24 +1,18 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+    <main className="app">
+      <section className="app__test">
+        <p className="app__eyebrow">FG Studio</p>
+
+        <h1>Base React attiva.</h1>
+
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+          Il progetto è pronto per navbar, routing e pagine.
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      </section>
+    </main>
   );
 }
 
