@@ -11,10 +11,15 @@
     var(--azzurro) 100%
   );
 }
-
 .home-footer .carousel {
-  width: min(100% - 3rem, 1300px);
+  width: min(100% - 2rem, 1500px);
   margin-inline: auto;
+}
+
+.home-footer__image {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
 .carousel-placeholder {
@@ -30,3 +35,8 @@
 .home-footer .carousel-caption {
   color: var(--text);
 }
+ h1 {
+  color: var(--grigio);
+  margin-left: 1rem;
+  margin-bottom: 1rem;
+ }
