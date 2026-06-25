@@ -1,0 +1,32 @@
+.home-footer {
+  min-height: 85vh;
+  display: flex;
+  align-items: center;
+  padding: 6rem 0;
+
+  background: linear-gradient(
+    to bottom,
+    var(--bg) 0%,
+    #dcebf2 58%,
+    var(--azzurro) 100%
+  );
+}
+
+.home-footer .carousel {
+  width: min(100% - 3rem, 1300px);
+  margin-inline: auto;
+}
+
+.carousel-placeholder {
+  min-height: 520px;
+  display: grid;
+  place-items: center;
+
+  background: rgba(255, 255, 255, 0.45);
+  color: var(--grigio);
+  font-size: 2rem;
+}
+
+.home-footer .carousel-caption {
+  color: var(--text);
+}

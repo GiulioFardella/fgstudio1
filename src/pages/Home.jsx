@@ -1,6 +1,7 @@
 import "../css/home.css";
 import Container from "react-bootstrap/Container";
 import MiddleHome from "../components/MiddleHome";
+import HomeFooter from "../components/HomeFooter";
 
 function Home() {
   return (
@@ -17,6 +18,7 @@ function Home() {
         </section>
 
       <MiddleHome />
+      <HomeFooter/>
     </>
   );
 }

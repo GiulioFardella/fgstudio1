@@ -9,13 +9,21 @@ function MiddleHome() {
         <div className="middle-home__copy">
           <p>
            FG Studio nasce dal minimalismo come liberazione dell'uomo.
-           Il desiderio di arrivare all’essenza: progetti essenziali, curati e funzionali, senza nulla di superfluo.
+           <p>
+            Il desiderio di arrivare alla matrice:
+            </p>
+          </p>
+          <p>
+            progetti essenziali, funzionali, mai superflui.
           </p>
         </div>
 
         <div className="middle-home__visual">
           <img src={homePic} alt="Dettaglio visivo FG Studio" />
         </div>
+        <section className="mhsection">
+       
+        </section>
       </Container>
     </section>
   );

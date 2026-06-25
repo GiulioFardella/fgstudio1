@@ -8,7 +8,7 @@ function Navbar1() {
     <Navbar expand="lg">
       <Container>
         <Nav.Link>
-          <img className="logo" src="/fglogo1.jpg" alt="FG Studio" />
+          <img className="logo" src="/fglogo1.png" alt="FG Studio" />
         </Nav.Link>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">

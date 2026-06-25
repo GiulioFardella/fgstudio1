@@ -5,10 +5,11 @@ body {
 #hero-section {
   min-height: 60vh;
   background: linear-gradient(
-    to bottom,
-    var(--azzurro) 0%,
-    var(--bg) 100%
-  );
+  to bottom,
+  var(--azzurro) 0%,
+  #dcebf2 45%,
+  var(--bg) 100%
+);
 }
 
 #hero-section > .container {
