@@ -14,12 +14,15 @@
 .home-footer .carousel {
   width: min(100% - 2rem, 1500px);
   margin-inline: auto;
+  border-radius: 15px;
+  overflow: hidden;
 }
-
 .home-footer__image {
   display: block;
   width: 100%;
-  height: auto;
+  height: 620px;
+  object-fit: cover;
+  object-position: top;
 }
 
 .carousel-placeholder {
