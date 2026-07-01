@@ -86,7 +86,9 @@ function Form1() {
                 <option value="" disabled>
                   Seleziona un settore
                 </option>
-                <option value="professionista">Professionista o consulente</option>
+                <option value="professionista">
+                  Professionista o consulente
+                </option>
                 <option value="attivita-locale">Attività locale</option>
                 <option value="artigiano">Artigiano</option>
                 <option value="piccola-impresa">Piccola impresa</option>
@@ -105,7 +107,9 @@ function Form1() {
                 <option value="sito-vetrina">Sito vetrina</option>
                 <option value="landing-page">Landing page</option>
                 <option value="portfolio-personale">Portfolio personale</option>
-                <option value="attivita-locale">Sito per attività locale</option>
+                <option value="attivita-locale">
+                  Sito per attività locale
+                </option>
                 <option value="restyling">Restyling sito esistente</option>
                 <option value="consulenza">Consulenza o ottimizzazione</option>
               </Form.Select>
@@ -119,10 +123,14 @@ function Form1() {
                   Seleziona un obiettivo
                 </option>
                 <option value="contatti">Ottenere più contatti</option>
-                <option value="presentazione">Presentare servizi o attività</option>
+                <option value="presentazione">
+                  Presentare servizi o attività
+                </option>
                 <option value="portfolio">Mostrare lavori e progetti</option>
                 <option value="vendita">Vendere online</option>
-                <option value="aggiornamento">Aggiornare un sito esistente</option>
+                <option value="aggiornamento">
+                  Aggiornare un sito esistente
+                </option>
               </Form.Select>
             </Form.Group>
 
@@ -168,7 +176,9 @@ function Form1() {
                 <option value="subito">Il prima possibile</option>
                 <option value="un-mese">Entro un mese</option>
                 <option value="due-mesi">Entro due mesi</option>
-                <option value="senza-scadenza">Non ho una scadenza precisa</option>
+                <option value="senza-scadenza">
+                  Non ho una scadenza precisa
+                </option>
               </Form.Select>
             </Form.Group>
           </div>
@@ -201,8 +211,6 @@ function Form1() {
           <button className="quote-form__submit" type="submit">
             Invia richiesta
           </button>
-
-          <p>Il form è offline: per ora mostra soltanto una conferma frontend.</p>
         </div>
       </Form>
 
