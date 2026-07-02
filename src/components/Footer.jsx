@@ -37,7 +37,7 @@ function Footer() {
               Raccontami cosa vuoi costruire.
             </p>
 
-            <Link className="site-footer__cta" to="/preventivo">
+            <Link className="site-footer__cta" to="/form">
               Richiedi un preventivo
             </Link>
           </Col>

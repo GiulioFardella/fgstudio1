@@ -199,3 +199,32 @@
     padding: 1.5rem;
   }
 }
+.contacts-form__honeypot {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+.contacts-form__check {
+  margin-top: 1.75rem;
+}
+
+.contacts-form__check .form-check-input {
+  border-radius: 0;
+  border-color: var(--border);
+  box-shadow: none;
+}
+
+.contacts-form__check .form-check-input:checked {
+  border-color: var(--prugna);
+  background-color: var(--prugna);
+}
+
+.contacts-form__check .form-check-label {
+  color: var(--grigio);
+  font-size: 0.9rem;
+  line-height: 1.45;
+} 
