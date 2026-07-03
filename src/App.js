@@ -6,18 +6,19 @@ import Footer from "./components/Footer";
 import Portfolio from "./pages/Portfolio";
 import Contacts from "./pages/Contacts";
 import Form1 from "./pages/Form1";
+import ScrollToTop from "./components/ScrollTop";
 function App() {
   return (
     <BrowserRouter>
       <Navbar1 />
-
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="portfolio" element={<Portfolio />} />
-        <Route path="contacts" element={<Contacts />} /> 
-        <Route path="form" element={<Form1 />} /> 
+        <Route path="contacts" element={<Contacts />} />
+        <Route path="form" element={<Form1 />} />
       </Routes>
-      <Footer/>
+      <Footer />
     </BrowserRouter>
   );
 }

@@ -5,14 +5,15 @@ import "../css/contacts.css";
 function Contacts() {
   return (
     <main className="contacts-page">
-      <section className="contacts-hero">
+      <section className="contacts-hero page-hero">
         <Container>
           <p className="contacts-hero__eyebrow">CONTATTI</p>
 
-          <h1>Parliamo del tuo progetto.</h1>
+          <h1 >
+          Parliamo del tuo progetto.</h1>
 
           <p className="contacts-hero__text">
-            Scrivi a FG Studio per informazioni, collaborazioni o per iniziare
+            Scrivici per informazioni, collaborazioni o per iniziare
             a costruire il tuo nuovo sito.
           </p>
         </Container>

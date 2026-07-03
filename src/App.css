@@ -9,3 +9,24 @@
   --radius-sm: 8px;
   --transition-base: 180ms ease;
 }
+@keyframes page-hero-enter {
+  from {
+    opacity: 0;
+    transform: translateY(42px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.page-hero > .container {
+  animation: page-hero-enter 650ms ease both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-hero > .container {
+    animation: none;
+  }
+}

@@ -104,7 +104,7 @@ function Portfolio() {
 
   return (
     <main className="portfolio-page">
-      <section className="portfolio-hero">
+      <section className="portfolio-hero page-hero">
         <Container>
           <p className="portfolio-hero__eyebrow">PORTFOLIO</p>
 
