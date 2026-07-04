@@ -8,7 +8,7 @@ import Contacts from "./pages/Contacts";
 import Form1 from "./pages/Form1";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
-
+import ScrollToTop from "./components/ScrollToTop";
 function AppContent() {
   const location = useLocation();
   const isAdminArea = location.pathname.startsWith("/admin");
@@ -16,7 +16,7 @@ function AppContent() {
   return (
     <>
       {!isAdminArea && <Navbar1 />}
-
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/portfolio" element={<Portfolio />} />
