@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { Form } from "react-bootstrap";
+import { API_BASE_URL } from "../config";
 
 function ContactForm() {
   const [isSent, setIsSent] = useState(false);
+  const [isSending, setIsSending] = useState(false);
+  const [error, setError] = useState("");
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
 
     const form = event.currentTarget;
@@ -15,20 +18,50 @@ function ContactForm() {
       return;
     }
 
-    const formData = new FormData(form);
-    const honeypot = String(formData.get("website") || "").trim();
+    setIsSending(true);
+    setIsSent(false);
+    setError("");
 
-    // Per ora non esiste ancora il backend.
-    // Quando sarà pronto, qui faremo POST /api/contact.
-    if (honeypot) {
+    const formData = new FormData(form);
+
+    const payload = {
+      name: String(formData.get("name") || "").trim(),
+      email: String(formData.get("email") || "").trim(),
+      phone: String(formData.get("phone") || "").trim(),
+      message: String(formData.get("message") || "").trim(),
+      consent: formData.get("consent") === "on",
+      website: String(formData.get("website") || "").trim(),
+    };
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/contact`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json().catch(() => null);
+
+      if (!response.ok || !data?.success) {
+        throw new Error(
+          data?.message || "Impossibile inviare la richiesta. Riprova."
+        );
+      }
+
       form.reset();
       form.classList.remove("was-validated");
-      return;
+      setIsSent(true);
+    } catch (submitError) {
+      setError(
+        submitError.message ||
+          "Si è verificato un errore. Riprova più tardi."
+      );
+    } finally {
+      setIsSending(false);
     }
-
-    setIsSent(true);
-    form.reset();
-    form.classList.remove("was-validated");
   }
 
   return (
@@ -102,14 +135,23 @@ function ContactForm() {
         required
       />
 
-      <button className="contacts-form__submit" type="submit">
-        Invia messaggio
+      <button
+        className="contacts-form__submit"
+        type="submit"
+        disabled={isSending}
+      >
+        {isSending ? "Invio in corso..." : "Invia messaggio"}
       </button>
 
       {isSent && (
         <p className="contacts-form__success" role="status">
-          Messaggio compilato correttamente. Il collegamento al backend verrà
-          aggiunto nella fase successiva.
+          Messaggio inviato correttamente. Ti ricontatteremo presto.
+        </p>
+      )}
+
+      {error && (
+        <p className="contacts-form__error" role="alert">
+          {error}
         </p>
       )}
     </Form>

@@ -1,0 +1,120 @@
+.admin-login {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+  background: linear-gradient(
+    to bottom,
+    var(--azzurro) 0%,
+    #dcebf2 48%,
+    var(--bg) 100%
+  );
+}
+
+.admin-login__panel {
+  width: min(100%, 32rem);
+  padding: clamp(2rem, 5vw, 4rem);
+  border: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.admin-login__eyebrow {
+  margin: 0;
+  color: var(--grigio);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+
+.admin-login h1 {
+  margin: 1rem 0 0;
+  color: var(--text);
+  font-size: clamp(2.8rem, 6vw, 4.5rem);
+  font-weight: 500;
+  line-height: 0.95;
+  letter-spacing: -0.06em;
+}
+
+.admin-login__intro {
+  max-width: 31ch;
+  margin: 1.5rem 0 0;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.admin-login__form {
+  margin-top: 3rem;
+}
+
+.admin-login__field {
+  margin-bottom: 1.6rem;
+}
+
+.admin-login__field label {
+  display: block;
+  margin-bottom: 0.55rem;
+  color: var(--grigio);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.admin-login__field input {
+  width: 100%;
+  min-height: 52px;
+  padding: 0.8rem 0;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
+  color: var(--text);
+  background: transparent;
+  outline: none;
+}
+
+.admin-login__field input:focus {
+  border-bottom-color: var(--prugna);
+}
+
+.admin-login__password-wrap {
+  position: relative;
+}
+
+.admin-login__password-wrap input {
+  padding-right: 5.5rem;
+}
+
+.admin-login__show-password {
+  position: absolute;
+  right: 0;
+  bottom: 0.7rem;
+  border: 0;
+  padding: 0;
+  color: var(--prugna);
+  background: transparent;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.admin-login__submit {
+  min-height: 50px;
+  margin-top: 0.8rem;
+  padding: 0.8rem 1.15rem;
+  border: 0;
+  color: #ffffff;
+  background: var(--prugna);
+  font-weight: 500;
+  transition:
+    background-color var(--transition-base),
+    transform var(--transition-base);
+}
+
+.admin-login__submit:hover,
+.admin-login__submit:focus-visible {
+  background: var(--text);
+  transform: translateY(-2px);
+}
+
+.admin-login__message {
+  margin: 1.5rem 0 0;
+  color: var(--muted);
+  line-height: 1.5;
+}

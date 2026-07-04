@@ -1,12 +1,16 @@
 import { useRef, useState } from "react";
 import { Form, Modal } from "react-bootstrap";
+import { API_BASE_URL } from "../config";
 import "../css/form.css";
+
 function Form1() {
   const [showModal, setShowModal] = useState(false);
   const [submittedName, setSubmittedName] = useState("");
+  const [isSending, setIsSending] = useState(false);
+  const [error, setError] = useState("");
   const closeButtonRef = useRef(null);
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
 
     const form = event.currentTarget;
@@ -17,13 +21,58 @@ function Form1() {
       return;
     }
 
+    setIsSending(true);
+    setError("");
+
     const formData = new FormData(form);
     const fullName = String(formData.get("name") || "").trim();
 
-    setSubmittedName(fullName.split(" ")[0] || "");
-    form.reset();
-    form.classList.remove("was-validated");
-    setShowModal(true);
+    const payload = {
+      name: fullName,
+      email: String(formData.get("email") || "").trim(),
+      phone: String(formData.get("phone") || "").trim(),
+      company: String(formData.get("company") || "").trim(),
+      sector: String(formData.get("sector") || "").trim(),
+      siteType: String(formData.get("siteType") || "").trim(),
+      goal: String(formData.get("goal") || "").trim(),
+      existingSite: String(formData.get("existingSite") || "").trim(),
+      budget: String(formData.get("budget") || "").trim(),
+      timeline: String(formData.get("timeline") || "").trim(),
+      message: String(formData.get("message") || "").trim(),
+      consent: formData.get("consent") === "on",
+      website: String(formData.get("website") || "").trim(),
+    };
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/quote`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json().catch(() => null);
+
+      if (!response.ok || !data?.success) {
+        throw new Error(
+          data?.message || "Impossibile inviare la richiesta. Riprova."
+        );
+      }
+
+      setSubmittedName(fullName.split(" ")[0] || "");
+      form.reset();
+      form.classList.remove("was-validated");
+      setShowModal(true);
+    } catch (submitError) {
+      setError(
+        submitError.message ||
+          "Si è verificato un errore. Riprova più tardi."
+      );
+    } finally {
+      setIsSending(false);
+    }
   }
 
   return (
@@ -32,6 +81,17 @@ function Form1() {
         <div className="quote-form__heading">
           <p className="quote-form__eyebrow">IL TUO PROGETTO</p>
           <h2>Compila il brief.</h2>
+        </div>
+
+        <div className="quote-form__honeypot" aria-hidden="true">
+          <label htmlFor="website">Sito web</label>
+          <input
+            id="website"
+            type="text"
+            name="website"
+            tabIndex={-1}
+            autoComplete="off"
+          />
         </div>
 
         <section className="quote-form__section">
@@ -44,6 +104,7 @@ function Form1() {
                 type="text"
                 name="name"
                 placeholder="Il tuo nome"
+                maxLength={120}
                 required
               />
             </Form.Group>
@@ -54,13 +115,19 @@ function Form1() {
                 type="email"
                 name="email"
                 placeholder="nome@email.it"
+                maxLength={254}
                 required
               />
             </Form.Group>
 
             <Form.Group className="quote-form__field" controlId="phone">
               <Form.Label>Telefono</Form.Label>
-              <Form.Control type="tel" name="phone" placeholder="+39 ..." />
+              <Form.Control
+                type="tel"
+                name="phone"
+                placeholder="+39 ..."
+                maxLength={50}
+              />
             </Form.Group>
 
             <Form.Group className="quote-form__field" controlId="company">
@@ -69,6 +136,7 @@ function Form1() {
                 type="text"
                 name="company"
                 placeholder="Nome della tua attività"
+                maxLength={160}
                 required
               />
             </Form.Group>
@@ -193,6 +261,7 @@ function Form1() {
               name="message"
               rows={7}
               placeholder="Servizi, pubblico di riferimento, pagine necessarie, idee o dettagli utili."
+              maxLength={4000}
               required
             />
           </Form.Group>
@@ -208,10 +277,20 @@ function Form1() {
         />
 
         <div className="quote-form__actions">
-          <button className="quote-form__submit" type="submit">
-            Invia richiesta
+          <button
+            className="quote-form__submit"
+            type="submit"
+            disabled={isSending}
+          >
+            {isSending ? "Invio in corso..." : "Invia richiesta"}
           </button>
         </div>
+
+        {error && (
+          <p className="quote-form__error" role="alert">
+            {error}
+          </p>
+        )}
       </Form>
 
       <Modal
@@ -222,18 +301,17 @@ function Form1() {
         contentClassName="quote-modal__content"
       >
         <Modal.Header closeButton>
-          <Modal.Title>Richiesta pronta.</Modal.Title>
+          <Modal.Title>Richiesta inviata.</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
           <p>
             {submittedName ? `${submittedName}, grazie. ` : "Grazie. "}
-            La richiesta è stata compilata correttamente.
+            Abbiamo ricevuto la tua richiesta.
           </p>
 
           <p className="quote-modal__note">
-            Questa è una conferma frontend: l’invio email verrà collegato più
-            avanti.
+            Ti ricontatteremo via email appena possibile.
           </p>
         </Modal.Body>
 
