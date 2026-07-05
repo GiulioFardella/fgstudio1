@@ -1,83 +1,21 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { API_BASE_URL } from "../config";
+import {
+  getAdminContactById,
+  getAdminContacts,
+  getAdminQuoteById,
+  getAdminQuotes,
+  updateAdminContact,
+  updateAdminQuote,
+} from "../services/adminApi";
 import "../css/admin-dashboard.css";
-
-const mockContacts = [
-  {
-    id: 1,
-    name: "Mario Rossi",
-    email: "mario.rossi@email.it",
-    phone: "+39 333 1234567",
-    status: "NEW",
-    createdAt: "Oggi, 10:32",
-    message:
-      "Ciao, vorrei capire come realizzare il sito per la mia attività e ricevere qualche informazione.",
-  },
-  {
-    id: 2,
-    name: "Giulia Bianchi",
-    email: "giulia@email.it",
-    phone: "",
-    status: "IN_PROGRESS",
-    createdAt: "Ieri, 17:48",
-    message:
-      "Vorrei aggiornare il sito esistente e renderlo più moderno e semplice da usare.",
-  },
-  {
-    id: 3,
-    name: "Luca Verdi",
-    email: "luca@email.it",
-    phone: "+39 347 7654321",
-    status: "ANSWERED",
-    createdAt: "2 giorni fa",
-    message:
-      "Mi servirebbero informazioni per un piccolo sito portfolio personale.",
-  },
-];
-
-const mockQuotes = [
-  {
-    id: 1,
-    name: "Studio Marea",
-    email: "info@studiomarea.it",
-    phone: "+39 02 1234567",
-    company: "Studio Marea",
-    sector: "Architettura",
-    siteType: "Sito vetrina",
-    goal: "Presentare lo studio",
-    existingSite: "Sì",
-    budget: "2.000 – 4.000 €",
-    timeline: "Entro 2 mesi",
-    status: "NEW",
-    createdAt: "Oggi, 09:14",
-    message:
-      "Abbiamo bisogno di un sito essenziale per presentare progetti, servizi e contatti.",
-  },
-  {
-    id: 2,
-    name: "Nero Coffee",
-    email: "ciao@nerocoffee.it",
-    phone: "",
-    company: "Nero Coffee",
-    sector: "Ristorazione",
-    siteType: "E-commerce",
-    goal: "Vendere prodotti online",
-    existingSite: "No",
-    budget: "4.000 – 6.000 €",
-    timeline: "Entro 3 mesi",
-    status: "IN_PROGRESS",
-    createdAt: "Ieri, 14:20",
-    message:
-      "Vorremmo vendere caffè e accessori online, con una parte dedicata al nostro brand.",
-  },
-];
 
 function statusLabel(status) {
   const labels = {
     NEW: "Nuova",
     IN_PROGRESS: "In corso",
-    ANSWERED: "Risposta",
+    ANSWED: "Risposta",
     ARCHIVED: "Archiviata",
   };
 
@@ -85,18 +23,49 @@ function statusLabel(status) {
 }
 
 function statusClass(status) {
-  return status.toLowerCase().replace("_", "-");
+  return String(status || "NEW").toLowerCase().replace("_", "-");
+}
+
+function formatDate(value) {
+  if (!value) {
+    return "—";
+  }
+
+  return new Intl.DateTimeFormat("it-IT", {
+    dateStyle: "medium",
+    timeStyle: "short",
+  }).format(new Date(value));
 }
 
 function AdminDashboard() {
   const [isCheckingSession, setIsCheckingSession] = useState(true);
+  const [isSessionValid, setIsSessionValid] = useState(false);
   const [sessionError, setSessionError] = useState("");
   const [isLoggingOut, setIsLoggingOut] = useState(false);
-  const [selectedType, setSelectedType] = useState("contact");
-  const [selectedId, setSelectedId] = useState(1);
+
+  const [contacts, setContacts] = useState([]);
+  const [quotes, setQuotes] = useState([]);
+  const [isLoadingRequests, setIsLoadingRequests] = useState(true);
+  const [requestsError, setRequestsError] = useState("");
+
+  const [selectedType, setSelectedType] = useState(null);
+  const [selectedId, setSelectedId] = useState(null);
+  const [selectedRequest, setSelectedRequest] = useState(null);
+  const [isLoadingDetail, setIsLoadingDetail] = useState(false);
+  const [detailError, setDetailError] = useState("");
+  const [detailReloadKey, setDetailReloadKey] = useState(0);
+
+  const [editableStatus, setEditableStatus] = useState("NEW");
+  const [adminNote, setAdminNote] = useState("");
+  const [isSavingChanges, setIsSavingChanges] = useState(false);
+  const [saveError, setSaveError] = useState("");
+  const [saveSuccess, setSaveSuccess] = useState("");
+
   const navigate = useNavigate();
 
   useEffect(() => {
+    let isActive = true;
+
     async function checkSession() {
       try {
         const response = await fetch(`${API_BASE_URL}/api/admin/auth/me`, {
@@ -114,15 +83,118 @@ function AdminDashboard() {
           return;
         }
 
-        setIsCheckingSession(false);
+        if (isActive) {
+          setIsSessionValid(true);
+          setIsCheckingSession(false);
+        }
       } catch {
-        setSessionError("Impossibile verificare la sessione.");
-        setIsCheckingSession(false);
+        if (isActive) {
+          setSessionError("Impossibile verificare la sessione.");
+          setIsCheckingSession(false);
+        }
       }
     }
 
     checkSession();
+
+    return () => {
+      isActive = false;
+    };
   }, [navigate]);
+
+  const loadRequests = useCallback(async () => {
+    setIsLoadingRequests(true);
+    setRequestsError("");
+
+    try {
+      const [contactsData, quotesData] = await Promise.all([
+        getAdminContacts(),
+        getAdminQuotes(),
+      ]);
+
+      setContacts(contactsData);
+      setQuotes(quotesData);
+
+      if (contactsData.length > 0) {
+        setSelectedType("contact");
+        setSelectedId(contactsData[0].id);
+      } else if (quotesData.length > 0) {
+        setSelectedType("quote");
+        setSelectedId(quotesData[0].id);
+      } else {
+        setSelectedType(null);
+        setSelectedId(null);
+        setSelectedRequest(null);
+      }
+    } catch (error) {
+      if (error?.status === 401) {
+        navigate("/admin/login", { replace: true });
+        return;
+      }
+
+      setRequestsError(
+        error?.message || "Impossibile caricare le richieste."
+      );
+    } finally {
+      setIsLoadingRequests(false);
+    }
+  }, [navigate]);
+
+  useEffect(() => {
+    if (isSessionValid) {
+      loadRequests();
+    }
+  }, [isSessionValid, loadRequests]);
+
+  useEffect(() => {
+    if (!isSessionValid || !selectedType || !selectedId) {
+      return;
+    }
+
+    let isActive = true;
+
+    async function loadDetail() {
+      setIsLoadingDetail(true);
+      setDetailError("");
+      setSaveError("");
+      setSaveSuccess("");
+      setSelectedRequest(null);
+
+      try {
+        const data =
+          selectedType === "contact"
+            ? await getAdminContactById(selectedId)
+            : await getAdminQuoteById(selectedId);
+
+        if (isActive) {
+          setSelectedRequest(data);
+          setEditableStatus(data.status || "NEW");
+          setAdminNote(data.adminNote || "");
+        }
+      } catch (error) {
+        if (error?.status === 401) {
+          navigate("/admin/login", { replace: true });
+          return;
+        }
+
+        if (isActive) {
+          setDetailError(
+            error?.message || "Impossibile caricare il dettaglio."
+          );
+        }
+      } finally {
+        if (isActive) {
+          setIsLoadingDetail(false);
+        }
+      }
+    }
+
+    loadDetail();
+
+    return () => {
+      isActive = false;
+    };
+  }, [isSessionValid, selectedType, selectedId, detailReloadKey, navigate]);
 
   async function handleLogout() {
     setIsLoggingOut(true);
@@ -151,10 +223,69 @@ function AdminDashboard() {
     setSelectedId(id);
   }
 
-  const selectedList = selectedType === "contact" ? mockContacts : mockQuotes;
+  async function handleSaveChanges() {
+    if (!selectedType || !selectedId) {
+      return;
+    }
 
-  const selectedRequest =
-    selectedList.find((item) => item.id === selectedId) || selectedList[0];
+    setIsSavingChanges(true);
+    setSaveError("");
+    setSaveSuccess("");
+
+    try {
+      const payload = {
+        status: editableStatus,
+        adminNote,
+      };
+
+      const updatedRequest =
+        selectedType === "contact"
+          ? await updateAdminContact(selectedId, payload)
+          : await updateAdminQuote(selectedId, payload);
+
+      setSelectedRequest(updatedRequest);
+      setEditableStatus(updatedRequest.status || "NEW");
+      setAdminNote(updatedRequest.adminNote || "");
+
+      if (selectedType === "contact") {
+        setContacts((currentContacts) =>
+          currentContacts.map((contact) =>
+            contact.id === selectedId
+              ? { ...contact, status: updatedRequest.status }
+              : contact
+          )
+        );
+      } else {
+        setQuotes((currentQuotes) =>
+          currentQuotes.map((quote) =>
+            quote.id === selectedId
+              ? { ...quote, status: updatedRequest.status }
+              : quote
+          )
+        );
+      }
+
+      setSaveSuccess("Modifiche salvate.");
+    } catch (error) {
+      if (error?.status === 401) {
+        navigate("/admin/login", { replace: true });
+        return;
+      }
+
+      if (error?.status === 403) {
+        setSaveError(
+          "Operazione bloccata. Ricarica la pagina e riprova."
+        );
+        return;
+      }
+
+      setSaveError(
+        error?.message || "Impossibile salvare le modifiche."
+      );
+    } finally {
+      setIsSavingChanges(false);
+    }
+  }
 
   if (isCheckingSession) {
     return (
@@ -190,165 +321,282 @@ function AdminDashboard() {
         </button>
       </header>
 
+      {requestsError && (
+        <div className="admin-dashboard__error">
+          <p>{requestsError}</p>
+
+          <button
+            className="admin-dashboard__logout"
+            type="button"
+            onClick={loadRequests}
+          >
+            Riprova
+          </button>
+        </div>
+      )}
+
       <div className="admin-dashboard__workspace">
         <section className="admin-dashboard__lists">
           <div className="admin-dashboard__list-column">
             <div className="admin-dashboard__list-heading">
               <p>CONTATTI</p>
-              <span>{mockContacts.length}</span>
+              <span>{contacts.length}</span>
             </div>
 
             <div className="admin-dashboard__requests">
-              {mockContacts.map((contact) => (
-                <button
-                  className={`admin-dashboard__request ${
-                    selectedType === "contact" && selectedId === contact.id
-                      ? "admin-dashboard__request--selected"
-                      : ""
-                  }`}
-                  key={contact.id}
-                  type="button"
-                  onClick={() => selectRequest("contact", contact.id)}
-                >
-                  <span className="admin-dashboard__request-name">
-                    {contact.name}
-                  </span>
-
-                  <span className="admin-dashboard__request-email">
-                    {contact.email}
-                  </span>
-
-                  <span
-                    className={`admin-dashboard__status admin-dashboard__status--${statusClass(
-                      contact.status,
-                    )}`}
+              {isLoadingRequests ? (
+                <p className="admin-dashboard__loading">Caricamento...</p>
+              ) : contacts.length === 0 ? (
+                <p className="admin-dashboard__loading">
+                  Nessun contatto ricevuto.
+                </p>
+              ) : (
+                contacts.map((contact) => (
+                  <button
+                    className={`admin-dashboard__request ${
+                      selectedType === "contact" && selectedId === contact.id
+                        ? "admin-dashboard__request--selected"
+                        : ""
+                    }`}
+                    key={contact.id}
+                    type="button"
+                    onClick={() => selectRequest("contact", contact.id)}
                   >
-                    {statusLabel(contact.status)}
-                  </span>
-                </button>
-              ))}
+                    <span className="admin-dashboard__request-name">
+                      {contact.name}
+                    </span>
+
+                    <span className="admin-dashboard__request-email">
+                      {contact.email}
+                    </span>
+
+                    <span
+                      className={`admin-dashboard__status admin-dashboard__status--${statusClass(
+                        contact.status
+                      )}`}
+                    >
+                      {statusLabel(contact.status)}
+                    </span>
+                  </button>
+                ))
+              )}
             </div>
           </div>
 
           <div className="admin-dashboard__list-column">
             <div className="admin-dashboard__list-heading">
               <p>PREVENTIVI</p>
-              <span>{mockQuotes.length}</span>
+              <span>{quotes.length}</span>
             </div>
 
             <div className="admin-dashboard__requests">
-              {mockQuotes.map((quote) => (
-                <button
-                  className={`admin-dashboard__request ${
-                    selectedType === "quote" && selectedId === quote.id
-                      ? "admin-dashboard__request--selected"
-                      : ""
-                  }`}
-                  key={quote.id}
-                  type="button"
-                  onClick={() => selectRequest("quote", quote.id)}
-                >
-                  <span className="admin-dashboard__request-name">
-                    {quote.name}
-                  </span>
-
-                  <span className="admin-dashboard__request-email">
-                    {quote.email}
-                  </span>
-
-                  <span
-                    className={`admin-dashboard__status admin-dashboard__status--${statusClass(
-                      quote.status,
-                    )}`}
+              {isLoadingRequests ? (
+                <p className="admin-dashboard__loading">Caricamento...</p>
+              ) : quotes.length === 0 ? (
+                <p className="admin-dashboard__loading">
+                  Nessuna richiesta di preventivo ricevuta.
+                </p>
+              ) : (
+                quotes.map((quote) => (
+                  <button
+                    className={`admin-dashboard__request ${
+                      selectedType === "quote" && selectedId === quote.id
+                        ? "admin-dashboard__request--selected"
+                        : ""
+                    }`}
+                    key={quote.id}
+                    type="button"
+                    onClick={() => selectRequest("quote", quote.id)}
                   >
-                    {statusLabel(quote.status)}
-                  </span>
-                </button>
-              ))}
+                    <span className="admin-dashboard__request-name">
+                      {quote.name}
+                    </span>
+
+                    <span className="admin-dashboard__request-email">
+                      {quote.email}
+                    </span>
+
+                    <span
+                      className={`admin-dashboard__status admin-dashboard__status--${statusClass(
+                        quote.status
+                      )}`}
+                    >
+                      {statusLabel(quote.status)}
+                    </span>
+                  </button>
+                ))
+              )}
             </div>
           </div>
         </section>
 
         <aside className="admin-dashboard__detail">
-          <div className="admin-dashboard__detail-top">
-            <div>
-              <p className="admin-dashboard__detail-eyebrow">
-                {selectedType === "contact" ? "CONTATTO" : "PREVENTIVO"}
-              </p>
+          {isLoadingDetail ? (
+            <p className="admin-dashboard__loading">
+              Caricamento dettaglio...
+            </p>
+          ) : detailError ? (
+            <div className="admin-dashboard__error">
+              <p>{detailError}</p>
 
-              <h2>{selectedRequest.name}</h2>
-
-              <p className="admin-dashboard__detail-email">
-                {selectedRequest.email}
-              </p>
+              <button
+                className="admin-dashboard__logout"
+                type="button"
+                onClick={() =>
+                  setDetailReloadKey((currentValue) => currentValue + 1)
+                }
+              >
+                Riprova
+              </button>
             </div>
+          ) : !selectedRequest ? (
+            <p className="admin-dashboard__loading">
+              Nessuna richiesta da visualizzare.
+            </p>
+          ) : (
+            <>
+              <div className="admin-dashboard__detail-top">
+                <div>
+                  <p className="admin-dashboard__detail-eyebrow">
+                    {selectedType === "contact" ? "CONTATTO" : "PREVENTIVO"}
+                  </p>
 
-            <span
-              className={`admin-dashboard__status admin-dashboard__status--${statusClass(
-                selectedRequest.status,
-              )}`}
-            >
-              {statusLabel(selectedRequest.status)}
-            </span>
-          </div>
+                  <h2>{selectedRequest.name}</h2>
 
-          <div className="admin-dashboard__detail-meta">
-            <div>
-              <span>Ricevuta</span>
-              <strong>{selectedRequest.createdAt}</strong>
-            </div>
+                  <p className="admin-dashboard__detail-email">
+                    {selectedRequest.email}
+                  </p>
+                </div>
 
-            {selectedRequest.phone && (
-              <div>
-                <span>Telefono</span>
-                <strong>{selectedRequest.phone}</strong>
-              </div>
-            )}
-          </div>
-
-          {selectedType === "quote" && (
-            <div className="admin-dashboard__quote-info">
-              <div>
-                <span>Azienda</span>
-                <strong>{selectedRequest.company}</strong>
+                <span
+                  className={`admin-dashboard__status admin-dashboard__status--${statusClass(
+                    selectedRequest.status
+                  )}`}
+                >
+                  {statusLabel(selectedRequest.status)}
+                </span>
               </div>
 
-              <div>
-                <span>Settore</span>
-                <strong>{selectedRequest.sector}</strong>
+              <div className="admin-dashboard__detail-meta">
+                <div>
+                  <span>Ricevuta</span>
+                  <strong>{formatDate(selectedRequest.createdAt)}</strong>
+                </div>
+
+                {selectedRequest.phone && (
+                  <div>
+                    <span>Telefono</span>
+                    <strong>{selectedRequest.phone}</strong>
+                  </div>
+                )}
               </div>
 
-              <div>
-                <span>Tipologia sito</span>
-                <strong>{selectedRequest.siteType}</strong>
+              {selectedType === "quote" && (
+                <div className="admin-dashboard__quote-info">
+                  <div>
+                    <span>Azienda</span>
+                    <strong>{selectedRequest.company || "—"}</strong>
+                  </div>
+
+                  <div>
+                    <span>Settore</span>
+                    <strong>{selectedRequest.sector || "—"}</strong>
+                  </div>
+
+                  <div>
+                    <span>Tipologia sito</span>
+                    <strong>{selectedRequest.siteType || "—"}</strong>
+                  </div>
+
+                  <div>
+                    <span>Obiettivo</span>
+                    <strong>{selectedRequest.goal || "—"}</strong>
+                  </div>
+
+                  <div>
+                    <span>Sito esistente</span>
+                    <strong>{selectedRequest.existingSite || "—"}</strong>
+                  </div>
+
+                  <div>
+                    <span>Budget</span>
+                    <strong>{selectedRequest.budget || "—"}</strong>
+                  </div>
+
+                  <div>
+                    <span>Tempistiche</span>
+                    <strong>{selectedRequest.timeline || "—"}</strong>
+                  </div>
+                </div>
+              )}
+
+              <div className="admin-dashboard__message">
+                <p>MESSAGGIO</p>
+                <div>{selectedRequest.message}</div>
               </div>
 
-              <div>
-                <span>Obiettivo</span>
-                <strong>{selectedRequest.goal}</strong>
-              </div>
+              <div className="admin-dashboard__edit">
+                <div className="admin-dashboard__edit-field">
+                  <label htmlFor="admin-request-status">STATO</label>
 
-              <div>
-                <span>Budget</span>
-                <strong>{selectedRequest.budget}</strong>
-              </div>
+                  <select
+                    id="admin-request-status"
+                    value={editableStatus}
+                    onChange={(event) => {
+                      setEditableStatus(event.target.value);
+                      setSaveSuccess("");
+                    }}
+                    disabled={isSavingChanges}
+                  >
+                    <option value="NEW">Nuova</option>
+                    <option value="IN_PROGRESS">In corso</option>
+                    <option value="ANSWERED">Risposta</option>
+                    <option value="ARCHIVED">Archiviata</option>
+                  </select>
+                </div>
 
-              <div>
-                <span>Tempistiche</span>
-                <strong>{selectedRequest.timeline}</strong>
+                <div className="admin-dashboard__note">
+                  <label htmlFor="admin-request-note">NOTA INTERNA</label>
+
+                  <textarea
+                    id="admin-request-note"
+                    placeholder="Aggiungi una nota interna..."
+                    value={adminNote}
+                    maxLength={2000}
+                    onChange={(event) => {
+                      setAdminNote(event.target.value);
+                      setSaveSuccess("");
+                    }}
+                    disabled={isSavingChanges}
+                  />
+                </div>
+
+                <button
+                  className="admin-dashboard__save"
+                  type="button"
+                  onClick={handleSaveChanges}
+                  disabled={isSavingChanges}
+                >
+                  {isSavingChanges ? "Salvataggio..." : "Salva modifiche"}
+                </button>
+
+                {saveSuccess && (
+                  <p className="admin-dashboard__save-message admin-dashboard__save-message--success">
+                    {saveSuccess}
+                  </p>
+                )}
+
+                {saveError && (
+                  <p
+                    className="admin-dashboard__save-message admin-dashboard__save-message--error"
+                    role="alert"
+                  >
+                    {saveError}
+                  </p>
+                )}
               </div>
-            </div>
+            </>
           )}
-
-          <div className="admin-dashboard__message">
-            <p>MESSAGGIO</p>
-            <div>{selectedRequest.message}</div>
-          </div>
-
-          <div className="admin-dashboard__note">
-            <p>NOTA INTERNA</p>
-            <textarea placeholder="Aggiungi una nota interna..." disabled />
-          </div>
         </aside>
       </div>
     </main>
