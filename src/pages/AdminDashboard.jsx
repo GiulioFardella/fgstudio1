@@ -151,8 +151,7 @@ function AdminDashboard() {
     setSelectedId(id);
   }
 
-  const selectedList =
-    selectedType === "contact" ? mockContacts : mockQuotes;
+  const selectedList = selectedType === "contact" ? mockContacts : mockQuotes;
 
   const selectedRequest =
     selectedList.find((item) => item.id === selectedId) || selectedList[0];
@@ -221,7 +220,7 @@ function AdminDashboard() {
 
                   <span
                     className={`admin-dashboard__status admin-dashboard__status--${statusClass(
-                      contact.status
+                      contact.status,
                     )}`}
                   >
                     {statusLabel(contact.status)}
@@ -259,7 +258,7 @@ function AdminDashboard() {
 
                   <span
                     className={`admin-dashboard__status admin-dashboard__status--${statusClass(
-                      quote.status
+                      quote.status,
                     )}`}
                   >
                     {statusLabel(quote.status)}
@@ -286,7 +285,7 @@ function AdminDashboard() {
 
             <span
               className={`admin-dashboard__status admin-dashboard__status--${statusClass(
-                selectedRequest.status
+                selectedRequest.status,
               )}`}
             >
               {statusLabel(selectedRequest.status)}
