@@ -406,3 +406,10 @@
   color: #9d2f2f;
   line-height: 1.5;
 }
+
+.form-page,
+.form-section,
+.form-container,
+.quote-form {
+  animation: page-hero-enter 650ms ease both;
+}

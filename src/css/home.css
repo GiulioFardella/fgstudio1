@@ -78,9 +78,10 @@ body {
 
   #hero-section h2 {
     max-width: 19ch;
-    margin: 0;
+    margin:0;
     font-size: clamp(1.45rem, 7vw, 2.1rem);
     line-height: 1.1;
+    
   }
 }
 

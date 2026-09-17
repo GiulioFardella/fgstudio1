@@ -6,21 +6,23 @@ import HomeFooter from "../components/HomeFooter";
 function Home() {
   return (
     <>
-        <section id="hero-section">
-      <Container>
+      <section id="hero-section">
+        <Container>
           <h1>Dritti al punto.</h1>
 
           <h2>
-            Trasformiamo idee chiare in siti essenziali, veloci e fatti per
+            Trasformiamo idee in spazi veloci e fatti per
             farsi capire.
           </h2>
-      </Container>
-        </section>
+        </Container>
+      </section>
 
       <MiddleHome />
-      <HomeFooter/>
+
+      <HomeFooter />
     </>
   );
 }
 
 export default Home;
+

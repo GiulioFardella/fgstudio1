@@ -11,7 +11,7 @@ function Footer() {
         <Row className="g-5">
           <Col lg={5}>
             <Link className="site-footer__brand" to="/">
-              FG Studio
+              AbOvo Lab 
             </Link>
 
             <p className="site-footer__intro">
@@ -44,7 +44,7 @@ function Footer() {
         </Row>
 
         <div className="site-footer__bottom">
-          <p>© {year} FG Studio</p>
+          <p>© {year} AbOvo Lab</p>
 
           <div className="site-footer__legal">
             <Link to="/privacy">Privacy</Link>

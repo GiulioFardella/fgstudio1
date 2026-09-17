@@ -30,7 +30,7 @@ function Contacts() {
                   className="contacts-info__email"
                   href="mailto:fgstudio@gmail.com"
                 >
-                  fgstudio@gmail.com
+                  abovolab@gmail.com
                 </a>
 
                 <p className="contacts-info__text">

@@ -1,5 +1,6 @@
 .middle-home {
   padding: 3.5rem 0 5rem;
+  overflow: hidden;
   background: var(--bg);
 }
 
@@ -8,6 +9,10 @@
   grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
   align-items: center;
   gap: clamp(2.5rem, 7vw, 8rem);
+}
+
+.middle-home__copy {
+  min-width: 0;
 }
 
 .middle-home__copy p {
@@ -20,7 +25,13 @@
   letter-spacing: -0.04em;
 }
 
+.middle-home__copy p + p {
+  margin-top: 0.1em;
+}
+
 .middle-home__visual {
+  width: 100%;
+  min-width: 0;
   overflow: hidden;
   background: var(--bg);
 }
@@ -29,19 +40,59 @@
   display: block;
   width: 100%;
   height: auto;
+  object-fit: cover;
 }
+
+/* TABLET E MOBILE */
 
 @media (max-width: 767.98px) {
   .middle-home {
-    padding: 3rem 0 5rem;
+    padding: 3rem 0 4rem;
   }
 
   .middle-home__content {
-    grid-template-columns: 1fr;
-    gap: 2.5rem;
+    grid-template-columns: minmax(0, 1fr) 38%;
+    align-items: start;
+    gap: 1rem;
   }
 
   .middle-home__copy p {
-    max-width: 20ch;
+    max-width: none;
+    font-size: clamp(1.3rem, 5.6vw, 1.8rem);
+    line-height: 1.08;
+    letter-spacing: -0.035em;
   }
+
+
+  .middle-home__visual {
+    align-self: start;
+  }
+
+  .middle-home__visual img {
+    width: 100%;
+    height: 18rem;
+    object-fit: cover;
+    object-position: center;
+  }
+}
+
+/* TELEFONI PICCOLI */
+
+@media (max-width: 390px) {
+  .middle-home__content {
+    grid-template-columns: minmax(0, 1fr) 34%;
+    gap: 0.75rem;
+  }
+
+  .middle-home__copy p {
+    font-size: 1.25rem;
+  }
+
+  .middle-home__visual img {
+    height: 15rem;
+  }
+}
+
+.middle-home__copy p + p {
+  margin-top: 0.35em;
 }
