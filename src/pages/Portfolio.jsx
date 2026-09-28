@@ -7,7 +7,6 @@ import lylesImg3 from "../assets/portfolio/img3.png";
 import lylesImg4 from "../assets/portfolio/img4.png";
 import lylesImg8 from "../assets/portfolio/img8.png";
 import lylesImg12 from "../assets/portfolio/img12.png";
-import lylesImg13 from "../assets/portfolio/img13.png";
 
 import zooverseeImg6 from "../assets/portfolio/img6.png";
 import zooverseeImg7 from "../assets/portfolio/img7.png";
@@ -15,6 +14,11 @@ import zooverseeImg5 from "../assets/portfolio/img5.png";
 import zooverseeImg9 from "../assets/portfolio/img9.png";
 import zooverseeImg10 from "../assets/portfolio/img10.png";
 import zooverseeImg11 from "../assets/portfolio/img11.png";
+
+import apiImg14 from "../assets/portfolio/img14.png";
+import apiImg15 from "../assets/portfolio/img15.png";
+import apiImg16 from "../assets/portfolio/img16.png";
+import apiImg17 from "../assets/portfolio/img17.png";
 
 function ProjectCarousel({ project }) {
   return (
@@ -61,7 +65,6 @@ function Portfolio() {
         { src: lylesImg4, alt: "Lyle's Coaching - schermata 4" },
         { src: lylesImg8, alt: "Lyle's Coaching - schermata 5" },
         { src: lylesImg12, alt: "Lyle's Coaching - schermata 6" },
-        { src: lylesImg13, alt: "Lyle's Coaching - schermata 7" },
       ],
       description:
         "Lyle’s Coaching è una piattaforma dedicata al fitness che mette in contatto gli utenti con un personal trainer certificato. Permette di acquistare schede di allenamento, inviare richieste tramite form pubblico, creare un account e accedere a un’area personale. Include richieste per piani su misura, pannello admin e pagamenti gestiti tramite Stripe.",
@@ -83,13 +86,16 @@ function Portfolio() {
 
   const mockups = [
     {
-      title: "Mockup in arrivo 01",
+      title: "Bianchi & Api",
       slides: [
-        { label: "Spazio per screen mockup 01" },
-        { label: "Spazio per screen mockup 02" },
+       
+        { src: apiImg14, alt: "Bianchi & Api - sezione prodotti" },
+        { src: apiImg15, alt: "Bianchi & Api - griglia mieli artigianali" },
+        { src: apiImg16, alt: "Bianchi & Api - iniziative sul territorio" },
+        { src: apiImg17, alt: "Bianchi & Api - ricerca e sensibilizzazione" },
       ],
       description:
-        "Una nuova direzione visiva sarà inserita qui prossimamente.",
+        "Bianchi & Api è un mockup frontend per un’apicoltura artigianale. Il progetto presenta una homepage narrativa, una sezione prodotti con mieli e prezzi, e un’area dedicata a iniziative territoriali, tutela delle api e collaborazione con attività di ricerca entomologica. Il layout usa una palette naturale, calda e coerente con il mondo agricolo.",
     },
     {
       title: "Mockup in arrivo 02",

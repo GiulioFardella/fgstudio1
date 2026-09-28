@@ -8,7 +8,7 @@ function MiddleHome() {
       <Container className="middle-home__content">
         <div className="middle-home__copy">
           <p>
-            Cambriano Lab nasce dal minimalismo come liberazione dell&apos;uomo.
+            Ab Ovo Lab nasce dal minimalismo come liberazione dell&apos;uomo.
           </p>
 
           <p>La necessità di tornare alla fonte.</p>
