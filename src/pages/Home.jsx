@@ -14,6 +14,7 @@ function Home() {
             Trasformiamo idee in spazi veloci e fatti per
             farsi capire.
           </h2>
+          <p> Contattaci per realizzare la tua intuizione in applicativi intuitivi, efficienti e responsive sia per browser che mobile. </p>
         </Container>
       </section>
 

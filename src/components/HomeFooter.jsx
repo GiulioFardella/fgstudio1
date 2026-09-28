@@ -18,6 +18,10 @@ import img14 from "../assets/portfolio/img14.png";
 import img15 from "../assets/portfolio/img15.png";
 import img16 from "../assets/portfolio/img16.png";
 import img17 from "../assets/portfolio/img17.png";
+import img18 from "../assets/portfolio/img18.png";
+import img19 from "../assets/portfolio/img19.png";
+import img20 from "../assets/portfolio/img20.png";
+import img21 from "../assets/portfolio/img21.png";
 import { Container } from "react-bootstrap";
 const portfolioItems = [
   { image: img1, alt: "Mockup 1" },
@@ -32,10 +36,15 @@ const portfolioItems = [
   { image: img10, alt: "Mockup 10" },
   { image: img11, alt: "Mockup 11" },
   { image: img12, alt: "Mockup 12" },
+  { image: img13, alt: "Mockup 12" },
   { image: img14, alt: "Mockup 13" },
   { image: img15, alt: "Mockup 13" },
   { image: img16, alt: "Mockup 13" },
   { image: img17, alt: "Mockup 13" },
+  { image: img18, alt: "Mockup 13" },
+  { image: img19, alt: "Mockup 13" },
+  { image: img20, alt: "Mockup 13" },
+  { image: img21, alt: "Mockup 13" },
 ];
 
 function HomeFooter() {
