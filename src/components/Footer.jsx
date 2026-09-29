@@ -11,7 +11,7 @@ function Footer() {
         <Row className="g-5">
           <Col lg={5}>
             <Link className="site-footer__brand" to="/">
-              AbOvo Lab 
+              AbOvo Lab
             </Link>
 
             <p className="site-footer__intro">
@@ -33,9 +33,7 @@ function Footer() {
           <Col xs={6} lg={4}>
             <h2 className="site-footer__title">Hai un progetto?</h2>
 
-            <p className="site-footer__text">
-              Raccontami cosa vuoi costruire.
-            </p>
+            <p className="site-footer__text">Raccontaci cosa vuoi costruire.</p>
 
             <Link className="site-footer__cta" to="/form">
               Richiedi un preventivo
