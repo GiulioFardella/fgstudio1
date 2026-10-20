@@ -1,7 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import { API_BASE_URL } from "../config";
+
 import {
+  deleteAdminContact,
+  deleteAdminQuote,
   getAdminContactById,
   getAdminContacts,
   getAdminQuoteById,
@@ -9,22 +13,28 @@ import {
   updateAdminContact,
   updateAdminQuote,
 } from "../services/adminApi";
+
 import "../css/admin-dashboard.css";
+
 
 function statusLabel(status) {
   const labels = {
     NEW: "Nuova",
     IN_PROGRESS: "In corso",
-    ANSWED: "Risposta",
+    ANSWERED: "Risposta",
     ARCHIVED: "Archiviata",
   };
 
   return labels[status] || status;
 }
 
+
 function statusClass(status) {
-  return String(status || "NEW").toLowerCase().replace("_", "-");
+  return String(status || "NEW")
+    .toLowerCase()
+    .replace("_", "-");
 }
+
 
 function formatDate(value) {
   if (!value) {
@@ -36,6 +46,7 @@ function formatDate(value) {
     timeStyle: "short",
   }).format(new Date(value));
 }
+
 
 function AdminDashboard() {
   const [isCheckingSession, setIsCheckingSession] = useState(true);
@@ -58,23 +69,28 @@ function AdminDashboard() {
   const [editableStatus, setEditableStatus] = useState("NEW");
   const [adminNote, setAdminNote] = useState("");
   const [isSavingChanges, setIsSavingChanges] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [saveError, setSaveError] = useState("");
   const [saveSuccess, setSaveSuccess] = useState("");
 
   const navigate = useNavigate();
+
 
   useEffect(() => {
     let isActive = true;
 
     async function checkSession() {
       try {
-        const response = await fetch(`${API_BASE_URL}/api/admin/auth/me`, {
-          method: "GET",
-          credentials: "include",
-          headers: {
-            Accept: "application/json",
-          },
-        });
+        const response = await fetch(
+          `${API_BASE_URL}/api/admin/auth/me`,
+          {
+            method: "GET",
+            credentials: "include",
+            headers: {
+              Accept: "application/json",
+            },
+          }
+        );
 
         const data = await response.json().catch(() => null);
 
@@ -101,6 +117,7 @@ function AdminDashboard() {
       isActive = false;
     };
   }, [navigate]);
+
 
   const loadRequests = useCallback(async () => {
     setIsLoadingRequests(true);
@@ -140,11 +157,13 @@ function AdminDashboard() {
     }
   }, [navigate]);
 
+
   useEffect(() => {
     if (isSessionValid) {
       loadRequests();
     }
   }, [isSessionValid, loadRequests]);
+
 
   useEffect(() => {
     if (!isSessionValid || !selectedType || !selectedId) {
@@ -194,19 +213,29 @@ function AdminDashboard() {
     return () => {
       isActive = false;
     };
-  }, [isSessionValid, selectedType, selectedId, detailReloadKey, navigate]);
+  }, [
+    isSessionValid,
+    selectedType,
+    selectedId,
+    detailReloadKey,
+    navigate,
+  ]);
+
 
   async function handleLogout() {
     setIsLoggingOut(true);
 
     try {
-      const response = await fetch(`${API_BASE_URL}/api/admin/auth/logout`, {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          Accept: "application/json",
-        },
-      });
+      const response = await fetch(
+        `${API_BASE_URL}/api/admin/auth/logout`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            Accept: "application/json",
+          },
+        }
+      );
 
       if (!response.ok) {
         throw new Error();
@@ -218,10 +247,16 @@ function AdminDashboard() {
     }
   }
 
+
   function selectRequest(type, id) {
+    if (isDeleting) {
+      return;
+    }
+
     setSelectedType(type);
     setSelectedId(id);
   }
+
 
   async function handleSaveChanges() {
     if (!selectedType || !selectedId) {
@@ -251,7 +286,10 @@ function AdminDashboard() {
         setContacts((currentContacts) =>
           currentContacts.map((contact) =>
             contact.id === selectedId
-              ? { ...contact, status: updatedRequest.status }
+              ? {
+                  ...contact,
+                  status: updatedRequest.status,
+                }
               : contact
           )
         );
@@ -259,7 +297,10 @@ function AdminDashboard() {
         setQuotes((currentQuotes) =>
           currentQuotes.map((quote) =>
             quote.id === selectedId
-              ? { ...quote, status: updatedRequest.status }
+              ? {
+                  ...quote,
+                  status: updatedRequest.status,
+                }
               : quote
           )
         );
@@ -287,27 +328,98 @@ function AdminDashboard() {
     }
   }
 
+
+  async function handleDeleteRequest() {
+    if (!selectedType || !selectedId) {
+      return;
+    }
+
+    const requestLabel =
+      selectedType === "contact"
+        ? "questo contatto"
+        : "questo preventivo";
+
+    const confirmed = window.confirm(
+      `Eliminare definitivamente ${requestLabel}? L'operazione non può essere annullata.`
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    setIsDeleting(true);
+    setSaveError("");
+    setSaveSuccess("");
+
+    try {
+      if (selectedType === "contact") {
+        await deleteAdminContact(selectedId);
+      } else {
+        await deleteAdminQuote(selectedId);
+      }
+
+      setSelectedType(null);
+      setSelectedId(null);
+      setSelectedRequest(null);
+
+      await loadRequests();
+    } catch (error) {
+      if (error?.status === 401) {
+        navigate("/admin/login", { replace: true });
+        return;
+      }
+
+      if (error?.status === 403) {
+        setSaveError(
+          "Operazione bloccata. Ricarica la pagina e riprova."
+        );
+        return;
+      }
+
+      if (error?.status === 404) {
+        setSaveError("Richiesta non trovata.");
+        return;
+      }
+
+      setSaveError(
+        error?.message || "Impossibile eliminare la richiesta."
+      );
+    } finally {
+      setIsDeleting(false);
+    }
+  }
+
+
   if (isCheckingSession) {
     return (
       <main className="admin-dashboard">
-        <p className="admin-dashboard__loading">Verifica accesso...</p>
+        <p className="admin-dashboard__loading">
+          Verifica accesso...
+        </p>
       </main>
     );
   }
 
+
   if (sessionError) {
     return (
       <main className="admin-dashboard">
-        <p className="admin-dashboard__error">{sessionError}</p>
+        <p className="admin-dashboard__error">
+          {sessionError}
+        </p>
       </main>
     );
   }
+
 
   return (
     <main className="admin-dashboard">
       <header className="admin-dashboard__header">
         <div>
-          <p className="admin-dashboard__eyebrow">FG STUDIO</p>
+          <p className="admin-dashboard__eyebrow">
+            FG STUDIO
+          </p>
+
           <h1>Richieste.</h1>
         </div>
 
@@ -320,6 +432,7 @@ function AdminDashboard() {
           {isLoggingOut ? "Uscita..." : "Esci"}
         </button>
       </header>
+
 
       {requestsError && (
         <div className="admin-dashboard__error">
@@ -335,17 +448,25 @@ function AdminDashboard() {
         </div>
       )}
 
+
       <div className="admin-dashboard__workspace">
+
         <section className="admin-dashboard__lists">
+
           <div className="admin-dashboard__list-column">
+
             <div className="admin-dashboard__list-heading">
               <p>CONTATTI</p>
               <span>{contacts.length}</span>
             </div>
 
+
             <div className="admin-dashboard__requests">
+
               {isLoadingRequests ? (
-                <p className="admin-dashboard__loading">Caricamento...</p>
+                <p className="admin-dashboard__loading">
+                  Caricamento...
+                </p>
               ) : contacts.length === 0 ? (
                 <p className="admin-dashboard__loading">
                   Nessun contatto ricevuto.
@@ -354,13 +475,17 @@ function AdminDashboard() {
                 contacts.map((contact) => (
                   <button
                     className={`admin-dashboard__request ${
-                      selectedType === "contact" && selectedId === contact.id
+                      selectedType === "contact" &&
+                      selectedId === contact.id
                         ? "admin-dashboard__request--selected"
                         : ""
                     }`}
                     key={contact.id}
                     type="button"
-                    onClick={() => selectRequest("contact", contact.id)}
+                    onClick={() =>
+                      selectRequest("contact", contact.id)
+                    }
+                    disabled={isDeleting}
                   >
                     <span className="admin-dashboard__request-name">
                       {contact.name}
@@ -380,18 +505,25 @@ function AdminDashboard() {
                   </button>
                 ))
               )}
+
             </div>
           </div>
 
+
           <div className="admin-dashboard__list-column">
+
             <div className="admin-dashboard__list-heading">
               <p>PREVENTIVI</p>
               <span>{quotes.length}</span>
             </div>
 
+
             <div className="admin-dashboard__requests">
+
               {isLoadingRequests ? (
-                <p className="admin-dashboard__loading">Caricamento...</p>
+                <p className="admin-dashboard__loading">
+                  Caricamento...
+                </p>
               ) : quotes.length === 0 ? (
                 <p className="admin-dashboard__loading">
                   Nessuna richiesta di preventivo ricevuta.
@@ -400,13 +532,17 @@ function AdminDashboard() {
                 quotes.map((quote) => (
                   <button
                     className={`admin-dashboard__request ${
-                      selectedType === "quote" && selectedId === quote.id
+                      selectedType === "quote" &&
+                      selectedId === quote.id
                         ? "admin-dashboard__request--selected"
                         : ""
                     }`}
                     key={quote.id}
                     type="button"
-                    onClick={() => selectRequest("quote", quote.id)}
+                    onClick={() =>
+                      selectRequest("quote", quote.id)
+                    }
+                    disabled={isDeleting}
                   >
                     <span className="admin-dashboard__request-name">
                       {quote.name}
@@ -426,28 +562,36 @@ function AdminDashboard() {
                   </button>
                 ))
               )}
+
             </div>
           </div>
+
         </section>
 
+
         <aside className="admin-dashboard__detail">
+
           {isLoadingDetail ? (
             <p className="admin-dashboard__loading">
               Caricamento dettaglio...
             </p>
           ) : detailError ? (
             <div className="admin-dashboard__error">
+
               <p>{detailError}</p>
 
               <button
                 className="admin-dashboard__logout"
                 type="button"
                 onClick={() =>
-                  setDetailReloadKey((currentValue) => currentValue + 1)
+                  setDetailReloadKey(
+                    (currentValue) => currentValue + 1
+                  )
                 }
               >
                 Riprova
               </button>
+
             </div>
           ) : !selectedRequest ? (
             <p className="admin-dashboard__loading">
@@ -455,10 +599,14 @@ function AdminDashboard() {
             </p>
           ) : (
             <>
+
               <div className="admin-dashboard__detail-top">
+
                 <div>
                   <p className="admin-dashboard__detail-eyebrow">
-                    {selectedType === "contact" ? "CONTATTO" : "PREVENTIVO"}
+                    {selectedType === "contact"
+                      ? "CONTATTO"
+                      : "PREVENTIVO"}
                   </p>
 
                   <h2>{selectedRequest.name}</h2>
@@ -468,6 +616,7 @@ function AdminDashboard() {
                   </p>
                 </div>
 
+
                 <span
                   className={`admin-dashboard__status admin-dashboard__status--${statusClass(
                     selectedRequest.status
@@ -475,69 +624,107 @@ function AdminDashboard() {
                 >
                   {statusLabel(selectedRequest.status)}
                 </span>
+
               </div>
 
+
               <div className="admin-dashboard__detail-meta">
+
                 <div>
                   <span>Ricevuta</span>
-                  <strong>{formatDate(selectedRequest.createdAt)}</strong>
+                  <strong>
+                    {formatDate(selectedRequest.createdAt)}
+                  </strong>
                 </div>
+
 
                 {selectedRequest.phone && (
                   <div>
                     <span>Telefono</span>
-                    <strong>{selectedRequest.phone}</strong>
+                    <strong>
+                      {selectedRequest.phone}
+                    </strong>
                   </div>
                 )}
+
               </div>
+
 
               {selectedType === "quote" && (
                 <div className="admin-dashboard__quote-info">
+
                   <div>
                     <span>Azienda</span>
-                    <strong>{selectedRequest.company || "—"}</strong>
+                    <strong>
+                      {selectedRequest.company || "—"}
+                    </strong>
                   </div>
+
 
                   <div>
                     <span>Settore</span>
-                    <strong>{selectedRequest.sector || "—"}</strong>
+                    <strong>
+                      {selectedRequest.sector || "—"}
+                    </strong>
                   </div>
+
 
                   <div>
                     <span>Tipologia sito</span>
-                    <strong>{selectedRequest.siteType || "—"}</strong>
+                    <strong>
+                      {selectedRequest.siteType || "—"}
+                    </strong>
                   </div>
+
 
                   <div>
                     <span>Obiettivo</span>
-                    <strong>{selectedRequest.goal || "—"}</strong>
+                    <strong>
+                      {selectedRequest.goal || "—"}
+                    </strong>
                   </div>
+
 
                   <div>
                     <span>Sito esistente</span>
-                    <strong>{selectedRequest.existingSite || "—"}</strong>
+                    <strong>
+                      {selectedRequest.existingSite || "—"}
+                    </strong>
                   </div>
+
 
                   <div>
                     <span>Budget</span>
-                    <strong>{selectedRequest.budget || "—"}</strong>
+                    <strong>
+                      {selectedRequest.budget || "—"}
+                    </strong>
                   </div>
+
 
                   <div>
                     <span>Tempistiche</span>
-                    <strong>{selectedRequest.timeline || "—"}</strong>
+                    <strong>
+                      {selectedRequest.timeline || "—"}
+                    </strong>
                   </div>
+
                 </div>
               )}
+
 
               <div className="admin-dashboard__message">
                 <p>MESSAGGIO</p>
                 <div>{selectedRequest.message}</div>
               </div>
 
+
               <div className="admin-dashboard__edit">
+
                 <div className="admin-dashboard__edit-field">
-                  <label htmlFor="admin-request-status">STATO</label>
+
+                  <label htmlFor="admin-request-status">
+                    STATO
+                  </label>
 
                   <select
                     id="admin-request-status"
@@ -546,17 +733,35 @@ function AdminDashboard() {
                       setEditableStatus(event.target.value);
                       setSaveSuccess("");
                     }}
-                    disabled={isSavingChanges}
+                    disabled={
+                      isSavingChanges || isDeleting
+                    }
                   >
-                    <option value="NEW">Nuova</option>
-                    <option value="IN_PROGRESS">In corso</option>
-                    <option value="ANSWERED">Risposta</option>
-                    <option value="ARCHIVED">Archiviata</option>
+                    <option value="NEW">
+                      Nuova
+                    </option>
+
+                    <option value="IN_PROGRESS">
+                      In corso
+                    </option>
+
+                    <option value="ANSWERED">
+                      Risposta
+                    </option>
+
+                    <option value="ARCHIVED">
+                      Archiviata
+                    </option>
                   </select>
+
                 </div>
 
+
                 <div className="admin-dashboard__note">
-                  <label htmlFor="admin-request-note">NOTA INTERNA</label>
+
+                  <label htmlFor="admin-request-note">
+                    NOTA INTERNA
+                  </label>
 
                   <textarea
                     id="admin-request-note"
@@ -567,24 +772,48 @@ function AdminDashboard() {
                       setAdminNote(event.target.value);
                       setSaveSuccess("");
                     }}
-                    disabled={isSavingChanges}
+                    disabled={
+                      isSavingChanges || isDeleting
+                    }
                   />
+
                 </div>
+
 
                 <button
                   className="admin-dashboard__save"
                   type="button"
                   onClick={handleSaveChanges}
-                  disabled={isSavingChanges}
+                  disabled={
+                    isSavingChanges || isDeleting
+                  }
                 >
-                  {isSavingChanges ? "Salvataggio..." : "Salva modifiche"}
+                  {isSavingChanges
+                    ? "Salvataggio..."
+                    : "Salva modifiche"}
                 </button>
+
+
+                <button
+                  className="admin-dashboard__logout"
+                  type="button"
+                  onClick={handleDeleteRequest}
+                  disabled={
+                    isSavingChanges || isDeleting
+                  }
+                >
+                  {isDeleting
+                    ? "Eliminazione..."
+                    : "Elimina definitivamente"}
+                </button>
+
 
                 {saveSuccess && (
                   <p className="admin-dashboard__save-message admin-dashboard__save-message--success">
                     {saveSuccess}
                   </p>
                 )}
+
 
                 {saveError && (
                   <p
@@ -594,13 +823,18 @@ function AdminDashboard() {
                     {saveError}
                   </p>
                 )}
+
               </div>
+
             </>
           )}
+
         </aside>
+
       </div>
     </main>
   );
 }
+
 
 export default AdminDashboard;

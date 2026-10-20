@@ -103,3 +103,15 @@ export function updateAdminQuote(id, payload) {
     body: payload,
   });
 }
+
+export function deleteAdminContact(id) {
+  return adminRequest(`/api/admin/contacts/${id}`, {
+    method: "DELETE",
+  });
+}
+
+export function deleteAdminQuote(id) {
+  return adminRequest(`/api/admin/quotes/${id}`, {
+    method: "DELETE",
+  });
+}
