@@ -73,10 +73,10 @@ function Portfolio() {
         { src: img19, alt: "euLive - calendario eventi" },
         { src: img21, alt: "euLive - dettaglio evento" },
         { src: img20, alt: "euLive - registrazione utente" },
-        { src: img21, alt: "euLive - popup serata live" },
+      
       ],
       description:
-        "euLive è un mockup frontend per una piattaforma musicale dedicata a eventi analogici e semi-analogici. Il progetto valorizza artisti, utenti, calendario serate, registrazione artista e registrazione pubblico, con uno stile urbano, scuro e ad alto impatto visivo.",
+        "euLive è una piattaforma musicale dedicata a eventi analogici e semi-analogici. Il progetto valorizza artisti, utenti, calendario serate, registrazione artista e registrazione pubblico, con uno stile urbano, scuro e ad alto impatto visivo.",
     },
     {
       title: "ZoOversee",
@@ -99,7 +99,7 @@ function Portfolio() {
         { src: img17, alt: "Bianchi & Api - iniziative e ricerca" },
       ],
       description:
-        "Bianchi & Api è un mockup frontend per un’apicoltura artigianale. Presenta una homepage narrativa, una sezione prodotti con mieli e prezzi, e un’area dedicata a territorio, tutela delle api e ricerca entomologica.",
+        "Bianchi & Api è un e-commerce per un’apicoltura artigianale. Presenta una homepage narrativa, una sezione prodotti con mieli e prezzi, e un’area dedicata a territorio, tutela delle api e ricerca entomologica.",
     },
   ];
 
@@ -112,7 +112,7 @@ function Portfolio() {
           <h1>Progetti, idee e direzioni visive.</h1>
 
           <p className="portfolio-hero__text">
-            Una raccolta di siti, concept e mockup costruiti per essere chiari,
+            Una raccolta di siti e concept costruiti per essere chiari,
             funzionali e riconoscibili.
           </p>
         </Container>

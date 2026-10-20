@@ -120,7 +120,7 @@ function ContactForm() {
           as="textarea"
           name="message"
           rows={6}
-          placeholder="Raccontami di cosa hai bisogno."
+          placeholder="Raccontaci di cosa hai bisogno."
           maxLength={4000}
           required
         />

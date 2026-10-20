@@ -254,7 +254,7 @@ function Form1() {
 
         <section className="quote-form__section">
           <Form.Group className="quote-form__field" controlId="message">
-            <Form.Label>Raccontami qualcosa in più sul progetto *</Form.Label>
+            <Form.Label>Raccontaci qualcosa in più sul progetto *</Form.Label>
 
             <Form.Control
               as="textarea"

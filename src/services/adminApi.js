@@ -7,16 +7,32 @@ class AdminApiError extends Error {
   }
 }
 
-function getCookie(name) {
-  const cookie = document.cookie
-    .split("; ")
-    .find((item) => item.startsWith(`${name}=`));
+async function getCsrfToken() {
+  const response = await fetch(`${API_BASE_URL}/api/admin/auth/csrf`, {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      Accept: "application/json",
+    },
+  });
 
-  if (!cookie) {
-    return null;
+  const data = await response.json().catch(() => null);
+
+  if (!response.ok) {
+    throw new AdminApiError(
+      data?.message || "Impossibile ottenere il token di sicurezza.",
+      response.status
+    );
   }
 
-  return decodeURIComponent(cookie.split("=")[1]);
+  if (!data?.token) {
+    throw new AdminApiError(
+      "Token di sicurezza non disponibile.",
+      0
+    );
+  }
+
+  return data;
 }
 
 async function adminRequest(path, options = {}) {
@@ -34,16 +50,9 @@ async function adminRequest(path, options = {}) {
   }
 
   if (method !== "GET" && method !== "HEAD") {
-    const csrfToken = getCookie("XSRF-TOKEN");
+    const csrf = await getCsrfToken();
 
-    if (!csrfToken) {
-      throw new AdminApiError(
-        "Token di sicurezza non disponibile. Ricarica la pagina e riprova.",
-        0
-      );
-    }
-
-    headers["X-XSRF-TOKEN"] = csrfToken;
+    headers[csrf.headerName || "X-CSRF-TOKEN"] = csrf.token;
   }
 
   const response = await fetch(`${API_BASE_URL}${path}`, {
