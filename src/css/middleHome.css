@@ -1,5 +1,5 @@
 .middle-home {
-  padding: 3.5rem 0 5rem;
+  padding: 1.5rem 0 5rem;
   overflow: hidden;
   background: var(--bg);
 }
@@ -62,7 +62,6 @@
     line-height: 1.08;
     letter-spacing: -0.035em;
   }
-
 
   .middle-home__visual {
     align-self: start;

@@ -38,12 +38,12 @@
 .home-footer .carousel-caption {
   color: var(--text);
 }
- h1 {
+h1 {
   color: var(--grigio);
   margin-left: 1rem;
   margin-bottom: 1rem;
- }
- /* CAROSELLO MOBILE */
+}
+/* CAROSELLO MOBILE */
 @media (max-width: 767.98px) {
   .home-footer {
     min-height: auto;
