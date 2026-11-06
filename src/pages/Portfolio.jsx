@@ -14,7 +14,6 @@ import img11 from "../assets/portfolio/img11.png";
 import img12 from "../assets/portfolio/img12.png";
 import img13 from "../assets/portfolio/img13.png";
 import img14 from "../assets/portfolio/img14.png";
-import img15 from "../assets/portfolio/img15.png";
 import img16 from "../assets/portfolio/img16.png";
 import img17 from "../assets/portfolio/img17.png";
 import img18 from "../assets/portfolio/img18.png";
@@ -95,7 +94,7 @@ function Portfolio() {
       slides: [
         { src: img4, alt: "Bianchi & Api - homepage" },
         { src: img6, alt: "Bianchi & Api - prodotti" },
-        { src: img15, alt: "Bianchi & Api - griglia mieli" },
+       
         { src: img17, alt: "Bianchi & Api - iniziative e ricerca" },
       ],
       description:
