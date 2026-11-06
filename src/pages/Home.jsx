@@ -13,8 +13,9 @@ function Home() {
           <h2>
             Trasformiamo idee in spazi digitali veloci e fatti per farsi capire.
           </h2>
-          <p> Contattaci per realizzare ogni tipo di applicativo. </p>
+         
         </Container>
+        
       </section>
 
       <MiddleHome />
