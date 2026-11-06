@@ -105,3 +105,16 @@ body {
     }
   }
 }
+.home-dots {
+  display: flex;
+  gap: 1rem;
+  padding: 0 0 2rem;
+  padding-left: max(calc((100% - 1140px) / 2), 8%);
+}
+
+.home-dots span {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--azzurro);
+}

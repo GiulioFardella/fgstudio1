@@ -13,11 +13,13 @@ function Home() {
           <h2>
             Trasformiamo idee in spazi digitali veloci e fatti per farsi capire.
           </h2>
-         
         </Container>
-        
       </section>
-
+      <div className="home-dots" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
       <MiddleHome />
 
       <HomeFooter />
