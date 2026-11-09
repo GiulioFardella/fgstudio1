@@ -1,4 +1,3 @@
-
 import { Container, Carousel } from "react-bootstrap";
 import "../css/portfolio.css";
 
@@ -52,9 +51,7 @@ function ProjectCarousel({ project }) {
         ))}
       </Carousel>
 
-      <p className="portfolio-project__description">
-        {project.description}
-      </p>
+      <p className="portfolio-project__description">{project.description}</p>
     </article>
   );
 }
@@ -146,10 +143,7 @@ function Portfolio() {
           <p className="portfolio-section__label">PROGETTI</p>
 
           {projects.map((project) => (
-            <ProjectCarousel
-              key={project.title}
-              project={project}
-            />
+            <ProjectCarousel key={project.title} project={project} />
           ))}
         </Container>
       </section>
