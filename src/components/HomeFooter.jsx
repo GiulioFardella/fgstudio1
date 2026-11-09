@@ -1,6 +1,6 @@
 
-import Carousel from "react-bootstrap/Carousel";
 import { Container } from "react-bootstrap";
+import ZoomableCarousel from "./ZoomableCarousel";
 import "../css/homefooter.css";
 
 import img1 from "../assets/portfolio/img1.png";
@@ -33,59 +33,75 @@ import img28 from "../assets/portfolio/img28.png";
 import img29 from "../assets/portfolio/img29.png";
 import img30 from "../assets/portfolio/img30.png";
 
-const portfolioItems = [
-  { image: img1, alt: "Lyle's Coaching - schermata 1" },
-  { image: img2, alt: "euLive - homepage" },
-  { image: img3, alt: "ZoOversee - schermata 1" },
-  { image: img4, alt: "Bianchi & Api - homepage" },
-  { image: img5, alt: "Lyle's Coaching - schermata 2" },
-  { image: img6, alt: "Bianchi & Api - prodotti" },
-  { image: img7, alt: "Portfolio - schermata 7" },
-  { image: img8, alt: "Lyle's Coaching - schermata 3" },
-  { image: img9, alt: "ZoOversee - schermata 2" },
-  { image: img10, alt: "ZoOversee - schermata 3" },
-  { image: img11, alt: "ZoOversee - schermata 4" },
-  { image: img12, alt: "Lyle's Coaching - schermata 4" },
-  { image: img13, alt: "Lyle's Coaching - schermata 5" },
-  { image: img14, alt: "Lyle's Coaching - schermata 6" },
-  { image: img16, alt: "ZoOversee - schermata 5" },
-  { image: img17, alt: "Bianchi & Api - iniziative" },
-  { image: img18, alt: "euLive - registrazione artista" },
-  { image: img19, alt: "euLive - calendario eventi" },
-  { image: img20, alt: "euLive - registrazione utente" },
-  { image: img21, alt: "euLive - dettaglio evento" },
+import pic1 from "../assets/portfolio/mobile/pic1.png";
+import pic2 from "../assets/portfolio/mobile/pic2.png";
+import pic3 from "../assets/portfolio/mobile/pic3.png";
+import pic4 from "../assets/portfolio/mobile/pic4.png";
+import pic5 from "../assets/portfolio/mobile/pic5.png";
+import pic6 from "../assets/portfolio/mobile/pic6.png";
+import pic7 from "../assets/portfolio/mobile/pic7.png";
+import pic8 from "../assets/portfolio/mobile/pic8.png";
+import pic9 from "../assets/portfolio/mobile/pic9.png";
+import pic10 from "../assets/portfolio/mobile/pic10.png";
+import pic11 from "../assets/portfolio/mobile/pic11.png";
+import pic12 from "../assets/portfolio/mobile/pic12.png";
+import pic13 from "../assets/portfolio/mobile/pic13.png";
+import pic14 from "../assets/portfolio/mobile/pic14.png";
+import pic15 from "../assets/portfolio/mobile/pic15.png";
+import pic16 from "../assets/portfolio/mobile/pic16.png";
+import pic17 from "../assets/portfolio/mobile/pic17.png";
 
-  // SerraIdee
-  { image: img22, alt: "SerraIdee - homepage" },
-  { image: img23, alt: "SerraIdee - presentazione" },
-  { image: img24, alt: "SerraIdee - visione" },
-  { image: img25, alt: "SerraIdee - ricerca" },
-  { image: img26, alt: "SerraIdee - attività" },
-  { image: img27, alt: "SerraIdee - partecipazione" },
-  { image: img28, alt: "SerraIdee - footer" },
-  { image: img29, alt: "SerraIdee - versione chiara" },
-  { image: img30, alt: "SerraIdee - dialogo" },
+const desktopImages = [
+  img1, img2, img3, img4, img5, img6, img7,
+  img8, img9, img10, img11, img12, img13,
+  img14, img16, img17, img18, img19, img20,
+  img21, img22, img23, img24, img25, img26,
+  img27, img28, img29, img30,
 ];
+
+const mobileImages = [
+  pic1, pic2, pic3, pic4, pic5, pic6,
+  pic7, pic8, pic9, pic10, pic11, pic12,
+  pic13, pic14, pic15, pic16, pic17,
+];
+
+const portfolioItems = desktopImages.map((src, index) => ({
+  src,
+  alt: `Progetto web - schermata ${index + 1}`,
+}));
+
+const mobileItems = mobileImages.map((src, index) => ({
+  src,
+  alt: `Layout mobile - schermata ${index + 1}`,
+}));
 
 function HomeFooter() {
   return (
-    <section className="home-footer">
-      <Container>
-        <h1>Inediti</h1>
+    <>
+      <section className="home-footer">
+        <Container>
+          <h1>Inediti</h1>
 
-        <Carousel interval={null}>
-          {portfolioItems.map((item, index) => (
-            <Carousel.Item key={index}>
-              <img
-                className="home-footer__image"
-                src={item.image}
-                alt={item.alt}
-              />
-            </Carousel.Item>
-          ))}
-        </Carousel>
-      </Container>
-    </section>
+          <ZoomableCarousel
+            items={portfolioItems}
+            imageClassName="home-footer__image"
+            indicators={true}
+          />
+        </Container>
+      </section>
+
+      <section className="home-mobile-showcase">
+        <Container>
+          <h2>Mobile layout</h2>
+
+          <ZoomableCarousel
+            items={mobileItems}
+            className="home-mobile-showcase__carousel"
+            imageClassName="home-mobile-showcase__image"
+          />
+        </Container>
+      </section>
+    </>
   );
 }
 

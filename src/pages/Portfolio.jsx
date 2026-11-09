@@ -1,4 +1,6 @@
-import { Container, Carousel } from "react-bootstrap";
+
+import { Container } from "react-bootstrap";
+import ZoomableCarousel from "../components/ZoomableCarousel";
 import "../css/portfolio.css";
 
 import img1 from "../assets/portfolio/img1.png";
@@ -33,25 +35,19 @@ import img30 from "../assets/portfolio/img30.png";
 function ProjectCarousel({ project }) {
   return (
     <article className="portfolio-project">
-      <h2 className="portfolio-project__title">{project.title}</h2>
+      <h2 className="portfolio-project__title">
+        {project.title}
+      </h2>
 
-      <Carousel
-        interval={null}
-        indicators={false}
+      <ZoomableCarousel
+        items={project.slides}
         className="portfolio-project__carousel"
-      >
-        {project.slides.map((slide, index) => (
-          <Carousel.Item key={`${project.title}-${index}`}>
-            <img
-              className="portfolio-project__image"
-              src={slide.src}
-              alt={slide.alt}
-            />
-          </Carousel.Item>
-        ))}
-      </Carousel>
+        imageClassName="portfolio-project__image"
+      />
 
-      <p className="portfolio-project__description">{project.description}</p>
+      <p className="portfolio-project__description">
+        {project.description}
+      </p>
     </article>
   );
 }
@@ -75,14 +71,14 @@ function Portfolio() {
       title: "SerraIdee",
       slides: [
         { src: img22, alt: "SerraIdee - homepage" },
-        { src: img23, alt: "SerraIdee - presentazione del progetto" },
-        { src: img24, alt: "SerraIdee - visione e contenuti" },
-        { src: img25, alt: "SerraIdee - teoria e ricerca" },
-        { src: img26, alt: "SerraIdee - incontri, podcast e video" },
-        { src: img27, alt: "SerraIdee - partecipazione e dialogo" },
+        { src: img23, alt: "SerraIdee - presentazione" },
+        { src: img24, alt: "SerraIdee - visione" },
+        { src: img25, alt: "SerraIdee - ricerca" },
+        { src: img26, alt: "SerraIdee - attività" },
+        { src: img27, alt: "SerraIdee - partecipazione" },
         { src: img28, alt: "SerraIdee - footer" },
         { src: img29, alt: "SerraIdee - versione chiara" },
-        { src: img30, alt: "SerraIdee - sezione partecipazione" },
+        { src: img30, alt: "SerraIdee - dialogo" },
       ],
       description:
         "SerraIdee è un portale culturale dedicato al confronto e alla condivisione della conoscenza. Il progetto riunisce incontri, podcast, discussioni e contenuti video in uno spazio digitale pensato per mettere in dialogo idee, persone e prospettive differenti. L’interfaccia alterna composizioni editoriali, tipografia espressiva e contrasti cromatici, con una doppia identità visiva chiara e scura.",
@@ -127,7 +123,9 @@ function Portfolio() {
     <main className="portfolio-page">
       <section className="portfolio-hero page-hero">
         <Container>
-          <p className="portfolio-hero__eyebrow">PORTFOLIO</p>
+          <p className="portfolio-hero__eyebrow">
+            PORTFOLIO
+          </p>
 
           <h1>Progetti, idee e direzioni visive.</h1>
 
@@ -140,10 +138,15 @@ function Portfolio() {
 
       <section className="portfolio-section">
         <Container>
-          <p className="portfolio-section__label">PROGETTI</p>
+          <p className="portfolio-section__label">
+            PROGETTI
+          </p>
 
           {projects.map((project) => (
-            <ProjectCarousel key={project.title} project={project} />
+            <ProjectCarousel
+              key={project.title}
+              project={project}
+            />
           ))}
         </Container>
       </section>
