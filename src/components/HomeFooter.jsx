@@ -1,4 +1,6 @@
+
 import Carousel from "react-bootstrap/Carousel";
+import { Container } from "react-bootstrap";
 import "../css/homefooter.css";
 
 import img1 from "../assets/portfolio/img1.png";
@@ -21,29 +23,48 @@ import img18 from "../assets/portfolio/img18.png";
 import img19 from "../assets/portfolio/img19.png";
 import img20 from "../assets/portfolio/img20.png";
 import img21 from "../assets/portfolio/img21.png";
-import { Container } from "react-bootstrap";
+import img22 from "../assets/portfolio/img22.png";
+import img23 from "../assets/portfolio/img23.png";
+import img24 from "../assets/portfolio/img24.png";
+import img25 from "../assets/portfolio/img25.png";
+import img26 from "../assets/portfolio/img26.png";
+import img27 from "../assets/portfolio/img27.png";
+import img28 from "../assets/portfolio/img28.png";
+import img29 from "../assets/portfolio/img29.png";
+import img30 from "../assets/portfolio/img30.png";
+
 const portfolioItems = [
-  { image: img1, alt: "Mockup 1" },
-  { image: img2, alt: "Mockup 2" },
-  { image: img3, alt: "Mockup 3" },
-  { image: img4, alt: "Mockup 4" },
-  { image: img5, alt: "Mockup 5" },
-  { image: img6, alt: "Mockup 6" },
-  { image: img7, alt: "Mockup 7" },
-  { image: img8, alt: "Mockup 8" },
-  { image: img9, alt: "Mockup 9" },
-  { image: img10, alt: "Mockup 10" },
-  { image: img11, alt: "Mockup 11" },
-  { image: img12, alt: "Mockup 12" },
-  { image: img13, alt: "Mockup 12" },
-  { image: img14, alt: "Mockup 13" },
- 
-  { image: img16, alt: "Mockup 13" },
-  { image: img17, alt: "Mockup 13" },
-  { image: img18, alt: "Mockup 13" },
-  { image: img19, alt: "Mockup 13" },
-  { image: img20, alt: "Mockup 13" },
-  { image: img21, alt: "Mockup 13" },
+  { image: img1, alt: "Lyle's Coaching - schermata 1" },
+  { image: img2, alt: "euLive - homepage" },
+  { image: img3, alt: "ZoOversee - schermata 1" },
+  { image: img4, alt: "Bianchi & Api - homepage" },
+  { image: img5, alt: "Lyle's Coaching - schermata 2" },
+  { image: img6, alt: "Bianchi & Api - prodotti" },
+  { image: img7, alt: "Portfolio - schermata 7" },
+  { image: img8, alt: "Lyle's Coaching - schermata 3" },
+  { image: img9, alt: "ZoOversee - schermata 2" },
+  { image: img10, alt: "ZoOversee - schermata 3" },
+  { image: img11, alt: "ZoOversee - schermata 4" },
+  { image: img12, alt: "Lyle's Coaching - schermata 4" },
+  { image: img13, alt: "Lyle's Coaching - schermata 5" },
+  { image: img14, alt: "Lyle's Coaching - schermata 6" },
+  { image: img16, alt: "ZoOversee - schermata 5" },
+  { image: img17, alt: "Bianchi & Api - iniziative" },
+  { image: img18, alt: "euLive - registrazione artista" },
+  { image: img19, alt: "euLive - calendario eventi" },
+  { image: img20, alt: "euLive - registrazione utente" },
+  { image: img21, alt: "euLive - dettaglio evento" },
+
+  // SerraIdee
+  { image: img22, alt: "SerraIdee - homepage" },
+  { image: img23, alt: "SerraIdee - presentazione" },
+  { image: img24, alt: "SerraIdee - visione" },
+  { image: img25, alt: "SerraIdee - ricerca" },
+  { image: img26, alt: "SerraIdee - attività" },
+  { image: img27, alt: "SerraIdee - partecipazione" },
+  { image: img28, alt: "SerraIdee - footer" },
+  { image: img29, alt: "SerraIdee - versione chiara" },
+  { image: img30, alt: "SerraIdee - dialogo" },
 ];
 
 function HomeFooter() {
@@ -51,19 +72,15 @@ function HomeFooter() {
     <section className="home-footer">
       <Container>
         <h1>Inediti</h1>
+
         <Carousel interval={null}>
-          {portfolioItems.map((item) => (
-            <Carousel.Item key={item.title}>
+          {portfolioItems.map((item, index) => (
+            <Carousel.Item key={index}>
               <img
                 className="home-footer__image"
                 src={item.image}
                 alt={item.alt}
               />
-
-              <Carousel.Caption>
-                <h3>{item.title}</h3>
-                <p>{item.description}</p>
-              </Carousel.Caption>
             </Carousel.Item>
           ))}
         </Carousel>

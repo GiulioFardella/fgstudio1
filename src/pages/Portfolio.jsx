@@ -1,3 +1,4 @@
+
 import { Container, Carousel } from "react-bootstrap";
 import "../css/portfolio.css";
 
@@ -20,6 +21,15 @@ import img18 from "../assets/portfolio/img18.png";
 import img19 from "../assets/portfolio/img19.png";
 import img20 from "../assets/portfolio/img20.png";
 import img21 from "../assets/portfolio/img21.png";
+import img22 from "../assets/portfolio/img22.png";
+import img23 from "../assets/portfolio/img23.png";
+import img24 from "../assets/portfolio/img24.png";
+import img25 from "../assets/portfolio/img25.png";
+import img26 from "../assets/portfolio/img26.png";
+import img27 from "../assets/portfolio/img27.png";
+import img28 from "../assets/portfolio/img28.png";
+import img29 from "../assets/portfolio/img29.png";
+import img30 from "../assets/portfolio/img30.png";
 
 function ProjectCarousel({ project }) {
   return (
@@ -65,6 +75,22 @@ function Portfolio() {
         "Lyle’s Coaching è una piattaforma fitness pensata per mettere in contatto utenti e personal trainer. Include presentazione dei servizi, acquisto di schede, richieste personalizzate, area utente, pannello admin e pagamenti tramite Stripe.",
     },
     {
+      title: "SerraIdee",
+      slides: [
+        { src: img22, alt: "SerraIdee - homepage" },
+        { src: img23, alt: "SerraIdee - presentazione del progetto" },
+        { src: img24, alt: "SerraIdee - visione e contenuti" },
+        { src: img25, alt: "SerraIdee - teoria e ricerca" },
+        { src: img26, alt: "SerraIdee - incontri, podcast e video" },
+        { src: img27, alt: "SerraIdee - partecipazione e dialogo" },
+        { src: img28, alt: "SerraIdee - footer" },
+        { src: img29, alt: "SerraIdee - versione chiara" },
+        { src: img30, alt: "SerraIdee - sezione partecipazione" },
+      ],
+      description:
+        "SerraIdee è un portale culturale dedicato al confronto e alla condivisione della conoscenza. Il progetto riunisce incontri, podcast, discussioni e contenuti video in uno spazio digitale pensato per mettere in dialogo idee, persone e prospettive differenti. L’interfaccia alterna composizioni editoriali, tipografia espressiva e contrasti cromatici, con una doppia identità visiva chiara e scura.",
+    },
+    {
       title: "euLive",
       slides: [
         { src: img2, alt: "euLive - homepage" },
@@ -72,7 +98,6 @@ function Portfolio() {
         { src: img19, alt: "euLive - calendario eventi" },
         { src: img21, alt: "euLive - dettaglio evento" },
         { src: img20, alt: "euLive - registrazione utente" },
-      
       ],
       description:
         "euLive è una piattaforma musicale dedicata a eventi analogici e semi-analogici. Il progetto valorizza artisti, utenti, calendario serate, registrazione artista e registrazione pubblico, con uno stile urbano, scuro e ad alto impatto visivo.",
@@ -94,7 +119,6 @@ function Portfolio() {
       slides: [
         { src: img4, alt: "Bianchi & Api - homepage" },
         { src: img6, alt: "Bianchi & Api - prodotti" },
-       
         { src: img17, alt: "Bianchi & Api - iniziative e ricerca" },
       ],
       description:
@@ -122,7 +146,10 @@ function Portfolio() {
           <p className="portfolio-section__label">PROGETTI</p>
 
           {projects.map((project) => (
-            <ProjectCarousel key={project.title} project={project} />
+            <ProjectCarousel
+              key={project.title}
+              project={project}
+            />
           ))}
         </Container>
       </section>
