@@ -1,4 +1,3 @@
-
 import { Container } from "react-bootstrap";
 import ZoomableCarousel from "./ZoomableCarousel";
 import "../css/homefooter.css";
@@ -52,17 +51,55 @@ import pic16 from "../assets/portfolio/mobile/pic16.png";
 import pic17 from "../assets/portfolio/mobile/pic17.png";
 
 const desktopImages = [
-  img1, img2, img3, img4, img5, img6, img7,
-  img8, img9, img10, img11, img12, img13,
-  img14, img16, img17, img18, img19, img20,
-  img21, img22, img23, img24, img25, img26,
-  img27, img28, img29, img30,
+  img1,
+  img2,
+  img3,
+  img4,
+  img5,
+  img6,
+  img7,
+  img8,
+  img9,
+  img10,
+  img11,
+  img12,
+  img13,
+  img14,
+  img16,
+  img17,
+  img18,
+  img19,
+  img20,
+  img21,
+  img22,
+  img23,
+  img24,
+  img25,
+  img26,
+  img27,
+  img28,
+  img29,
+  img30,
 ];
 
 const mobileImages = [
-  pic1, pic2, pic3, pic4, pic5, pic6,
-  pic7, pic8, pic9, pic10, pic11, pic12,
-  pic13, pic14, pic15, pic16, pic17,
+  pic1,
+  pic2,
+  pic3,
+  pic4,
+  pic5,
+  pic6,
+  pic7,
+  pic8,
+  pic9,
+  pic10,
+  pic11,
+  pic12,
+  pic13,
+  pic14,
+  pic15,
+  pic16,
+  pic17,
 ];
 
 const portfolioItems = desktopImages.map((src, index) => ({
