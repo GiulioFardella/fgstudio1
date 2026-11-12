@@ -1,47 +1,103 @@
-
-/* CAROSELLO PROPORZIONATO */
+/* CAROUSEL */
 
 .zoomable-carousel {
   width: 100%;
   min-height: 0;
+  overflow: hidden;
 }
 
 .zoomable-carousel .carousel-inner {
+  position: relative;
   width: 100%;
   height: auto;
   min-height: 0;
   max-height: none;
-  aspect-ratio: auto;
+  overflow: hidden;
 }
 
+
+/* SLIDE */
+
 .zoomable-carousel .carousel-item {
+  position: relative;
+  display: none;
+  float: left;
+
+  width: 100%;
   height: auto;
   min-height: 0;
   max-height: none;
-  aspect-ratio: auto;
+
+  margin-right: -100%;
+
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+
+  transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
 }
+
+.zoomable-carousel .carousel-item.active,
+.zoomable-carousel .carousel-item-next,
+.zoomable-carousel .carousel-item-prev {
+  display: block;
+}
+
+
+/* VA VERSO SINISTRA */
+
+.zoomable-carousel .active.carousel-item-start,
+.zoomable-carousel .carousel-item-prev:not(.carousel-item-end) {
+  transform: translateX(-100%);
+}
+
+
+/* VA VERSO DESTRA */
+
+.zoomable-carousel .active.carousel-item-end,
+.zoomable-carousel .carousel-item-next:not(.carousel-item-start) {
+  transform: translateX(100%);
+}
+
+
+/* POSIZIONE FINALE */
+
+.zoomable-carousel .carousel-item-next.carousel-item-start,
+.zoomable-carousel .carousel-item-prev.carousel-item-end {
+  transform: translateX(0);
+}
+
+
+/* PULSANTE IMMAGINE */
 
 .zoomable-carousel__trigger {
   display: block;
   width: 100%;
   height: auto;
+
   padding: 0;
   margin: 0;
+
   border: 0;
   border-radius: 0;
+
   background: transparent;
+
   cursor: zoom-in;
 }
 
 .zoomable-carousel .carousel-item img {
   display: block;
+
   width: 100%;
   height: auto;
+
   min-height: 0;
   max-height: none;
-  aspect-ratio: auto;
+
   object-fit: contain;
 }
+
 
 /* PORTFOLIO */
 
@@ -51,29 +107,35 @@
   height: auto;
   min-height: 0;
   max-height: none;
-  aspect-ratio: auto;
 }
 
 .portfolio-project__carousel.zoomable-carousel
-.portfolio-project__image {
+  .portfolio-project__image {
   display: block;
+
   width: 100%;
   height: auto;
+
   min-height: 0;
   max-height: none;
-  aspect-ratio: auto;
+
   object-fit: contain;
 }
 
-/* ZOOM */
+
+/* LIGHTBOX */
 
 .zoom-lightbox {
   position: fixed;
   inset: 0;
+
   z-index: 9999;
+
   display: flex;
   flex-direction: column;
+
   padding: 1rem;
+
   background: rgba(0, 0, 0, 0.94);
 }
 
@@ -81,18 +143,25 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
+
   gap: 1rem;
+
   padding-bottom: 1rem;
+
   flex-shrink: 0;
 }
 
 .zoom-lightbox__toolbar button {
   border: 1px solid rgba(255, 255, 255, 0.45);
   border-radius: 6px;
+
   background: transparent;
   color: white;
+
   padding: 0.6rem 1rem;
+
   cursor: pointer;
+
   font: inherit;
 }
 
@@ -103,21 +172,29 @@
 
 .zoom-lightbox__viewport {
   flex: 1;
+
   min-height: 0;
   width: 100%;
+
   overflow: auto;
+
   display: flex;
+
   align-items: safe center;
   justify-content: safe center;
 }
 
 .zoom-lightbox__image {
   display: block;
+
   width: auto;
   height: auto;
+
   max-width: 100%;
   max-height: 100%;
+
   object-fit: contain;
+
   margin: auto;
 }
 
@@ -125,6 +202,7 @@
   max-width: none;
   max-height: none;
 }
+
 
 /* MOBILE */
 

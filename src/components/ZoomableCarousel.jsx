@@ -32,8 +32,7 @@ function ZoomableCarousel({
 
     function handleKeyDown(event) {
       if (event.key === "Escape") {
-        setZoomedImage(null);
-        setFullSize(false);
+        closeImage();
       }
     }
 
@@ -50,7 +49,6 @@ function ZoomableCarousel({
       <Carousel
         interval={null}
         indicators={indicators}
-        slide={true}
         className={`zoomable-carousel ${className}`}
       >
         {items.map((item, index) => (
