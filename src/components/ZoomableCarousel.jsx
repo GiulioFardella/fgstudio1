@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import Carousel from "react-bootstrap/Carousel";
@@ -24,7 +23,9 @@ function ZoomableCarousel({
   }
 
   useEffect(() => {
-    if (!zoomedImage) return;
+    if (!zoomedImage) {
+      return;
+    }
 
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
@@ -32,6 +33,7 @@ function ZoomableCarousel({
     function handleKeyDown(event) {
       if (event.key === "Escape") {
         setZoomedImage(null);
+        setFullSize(false);
       }
     }
 
@@ -48,7 +50,7 @@ function ZoomableCarousel({
       <Carousel
         interval={null}
         indicators={indicators}
-        slide={false}
+        slide={true}
         className={`zoomable-carousel ${className}`}
       >
         {items.map((item, index) => (
