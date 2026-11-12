@@ -40,9 +40,7 @@ import gem5 from "../assets/portfolio/gem5.png";
 function ProjectCarousel({ project }) {
   return (
     <article className="portfolio-project">
-      <h2 className="portfolio-project__title">
-        {project.title}
-      </h2>
+      <h2 className="portfolio-project__title">{project.title}</h2>
 
       <ZoomableCarousel
         items={project.slides}
@@ -50,9 +48,7 @@ function ProjectCarousel({ project }) {
         imageClassName="portfolio-project__image"
       />
 
-      <p className="portfolio-project__description">
-        {project.description}
-      </p>
+      <p className="portfolio-project__description">{project.description}</p>
     </article>
   );
 }
@@ -145,13 +141,9 @@ function Portfolio() {
     <main className="portfolio-page">
       <section className="portfolio-hero page-hero">
         <Container>
-          <p className="portfolio-hero__eyebrow">
-            PORTFOLIO
-          </p>
+          <p className="portfolio-hero__eyebrow">PORTFOLIO</p>
 
-          <h1>
-            Progetti, idee e direzioni visive.
-          </h1>
+          <h1>Progetti, idee e direzioni visive.</h1>
 
           <p className="portfolio-hero__text">
             Una raccolta di siti e concept costruiti per essere chiari,
@@ -162,15 +154,10 @@ function Portfolio() {
 
       <section className="portfolio-section">
         <Container>
-          <p className="portfolio-section__label">
-            PROGETTI
-          </p>
+          <p className="portfolio-section__label">PROGETTI</p>
 
           {projects.map((project) => (
-            <ProjectCarousel
-              key={project.title}
-              project={project}
-            />
+            <ProjectCarousel key={project.title} project={project} />
           ))}
         </Container>
       </section>
