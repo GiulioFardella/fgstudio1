@@ -32,6 +32,12 @@ import img28 from "../assets/portfolio/img28.png";
 import img29 from "../assets/portfolio/img29.png";
 import img30 from "../assets/portfolio/img30.png";
 
+import gem1 from "../assets/portfolio/gem1.png";
+import gem2 from "../assets/portfolio/gem2.png";
+import gem3 from "../assets/portfolio/gem3.png";
+import gem4 from "../assets/portfolio/gem4.png";
+import gem5 from "../assets/portfolio/gem5.png";
+
 import pic1 from "../assets/portfolio/mobile/pic1.png";
 import pic2 from "../assets/portfolio/mobile/pic2.png";
 import pic3 from "../assets/portfolio/mobile/pic3.png";
@@ -54,9 +60,7 @@ const desktopImages = [
   img1,
   img2,
   img3,
-  img4,
   img5,
-  img6,
   img7,
   img8,
   img9,
@@ -66,7 +70,6 @@ const desktopImages = [
   img13,
   img14,
   img16,
-  img17,
   img18,
   img19,
   img20,
@@ -80,6 +83,16 @@ const desktopImages = [
   img28,
   img29,
   img30,
+
+  gem1,
+  gem2,
+  gem3,
+  gem4,
+  gem5,
+
+  img4,
+  img6,
+  img17,
 ];
 
 const mobileImages = [

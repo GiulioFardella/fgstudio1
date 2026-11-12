@@ -1,4 +1,3 @@
-
 import { Container } from "react-bootstrap";
 import ZoomableCarousel from "../components/ZoomableCarousel";
 import "../css/portfolio.css";
@@ -31,6 +30,12 @@ import img27 from "../assets/portfolio/img27.png";
 import img28 from "../assets/portfolio/img28.png";
 import img29 from "../assets/portfolio/img29.png";
 import img30 from "../assets/portfolio/img30.png";
+
+import gem1 from "../assets/portfolio/gem1.png";
+import gem2 from "../assets/portfolio/gem2.png";
+import gem3 from "../assets/portfolio/gem3.png";
+import gem4 from "../assets/portfolio/gem4.png";
+import gem5 from "../assets/portfolio/gem5.png";
 
 function ProjectCarousel({ project }) {
   return (
@@ -67,6 +72,7 @@ function Portfolio() {
       description:
         "Lyle’s Coaching è una piattaforma fitness pensata per mettere in contatto utenti e personal trainer. Include presentazione dei servizi, acquisto di schede, richieste personalizzate, area utente, pannello admin e pagamenti tramite Stripe.",
     },
+
     {
       title: "SerraIdee",
       slides: [
@@ -83,6 +89,7 @@ function Portfolio() {
       description:
         "SerraIdee è un portale culturale dedicato al confronto e alla condivisione della conoscenza. Il progetto riunisce incontri, podcast, discussioni e contenuti video in uno spazio digitale pensato per mettere in dialogo idee, persone e prospettive differenti. L’interfaccia alterna composizioni editoriali, tipografia espressiva e contrasti cromatici, con una doppia identità visiva chiara e scura.",
     },
+
     {
       title: "euLive",
       slides: [
@@ -95,6 +102,7 @@ function Portfolio() {
       description:
         "euLive è una piattaforma musicale dedicata a eventi analogici e semi-analogici. Il progetto valorizza artisti, utenti, calendario serate, registrazione artista e registrazione pubblico, con uno stile urbano, scuro e ad alto impatto visivo.",
     },
+
     {
       title: "ZoOversee",
       slides: [
@@ -107,6 +115,20 @@ function Portfolio() {
       description:
         "ZoOversee è una piattaforma dedicata alla tutela ambientale e alle specie in via d’estinzione. Permette di esplorare missioni, candidarsi a progetti internazionali, sostenere iniziative tramite adozioni a distanza e gestire il proprio profilo utente.",
     },
+
+    {
+      title: "GEM System 98",
+      slides: [
+        { src: gem1, alt: "GEM System 98 - schermata 1" },
+        { src: gem2, alt: "GEM System 98 - schermata 2" },
+        { src: gem3, alt: "GEM System 98 - schermata 3" },
+        { src: gem4, alt: "GEM System 98 - schermata 4" },
+        { src: gem5, alt: "GEM System 98 - schermata 5" },
+      ],
+      description:
+        "GEM System 98 è un gestionale industriale progettato per aziende manifatturiere, pensato per centralizzare personale, presenze, ferie e permessi, produzione, segnalazioni, proposte dei dipendenti e comunicazioni aziendali. L’interfaccia riprende il linguaggio visivo dei gestionali Windows 98/2000, combinandolo con una struttura modulare moderna. Il prototipo è sviluppato in React e prevede un’evoluzione backend con Java, Spring Boot, PostgreSQL e REST API.",
+    },
+
     {
       title: "Bianchi & Api",
       slides: [
@@ -127,7 +149,9 @@ function Portfolio() {
             PORTFOLIO
           </p>
 
-          <h1>Progetti, idee e direzioni visive.</h1>
+          <h1>
+            Progetti, idee e direzioni visive.
+          </h1>
 
           <p className="portfolio-hero__text">
             Una raccolta di siti e concept costruiti per essere chiari,
